@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
+from datetime import time
 
 from database import Clients, Flights
 
@@ -63,7 +64,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 10, 20, 14, 0, 0),
     origin='Buenos Aires',
     destination='Salta',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=220,
     capacity=200
 )
@@ -73,7 +74,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 10, 25, 11, 30, 0),
     origin='Córdoba',
     destination='Salta',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=210,
     capacity=180
 )
@@ -83,7 +84,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 11, 1, 15, 30, 0),
     origin='Mendoza',
     destination='Buenos Aires',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=190,
     capacity=250
 )
@@ -93,7 +94,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 11, 5, 19, 0, 0),
     origin='Salta',
     destination='Córdoba',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=230,
     capacity=220
 )
@@ -103,7 +104,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 9, 10, 10, 30, 0),
     origin='Buenos Aires',
     destination='Córdoba',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=150,
     capacity=150
 )
@@ -113,7 +114,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 9, 15, 12, 0, 0),
     origin='Córdoba',
     destination='Mendoza',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=200,
     capacity=200
 )
@@ -123,7 +124,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 9, 20, 16, 15, 0),
     origin='Mendoza',
     destination='Salta',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=250,
     capacity=250
 )
@@ -133,7 +134,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 9, 25, 13, 30, 0),
     origin='Salta',
     destination='Buenos Aires',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=180,
     capacity=180
 )
@@ -143,7 +144,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 9, 11, 10, 0, 0),
     origin='Buenos Aires',
     destination='Mendoza',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=200,
     capacity=200
 )
@@ -153,7 +154,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 9, 30, 16, 30, 0),
     origin='Buenos Aires',
     destination='Bariloche',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=280,
     capacity=180
 )
@@ -163,7 +164,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 10, 5, 12, 30, 0),
     origin='Córdoba',
     destination='Bariloche',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=260,
     capacity=150
 )
@@ -173,7 +174,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 10, 10, 11, 0, 0),
     origin='Mendoza',
     destination='Córdoba',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=180,
     capacity=200
 )
@@ -183,7 +184,7 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 10, 15, 17, 30, 0),
     origin='Salta',
     destination='Mendoza',
-    flight_time='2 horas 30 minutos',
+    flight_time=time(2, 30),
     price=210,
     capacity=220
 )
