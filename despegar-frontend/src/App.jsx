@@ -7,6 +7,7 @@ import { useLocalStorage } from './helpers/useLocalStorage';
 import { Register } from './pages/Authentication/Register';
 import { Profile } from './pages/Profile/Profile';
 import { Flights } from './pages/Flights/Flights';
+import { BookFlight } from './pages/Flights/BookFlight';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/flights" element={<Flights />} />
+            <Route path="/book-flight" element={<BookFlight />} />
         </Routes>
       </BrowserRouter>
       </>

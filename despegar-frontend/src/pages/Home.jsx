@@ -10,9 +10,9 @@ const Home = (props) => {
    const {getFlights} = flightPresenter()
    
     useEffect(() => {
-      getFlights()
+      getFlights('01/01/1970', '01/01/2970')
         .then((res) => {
-          setFlights(res.flights)
+          setFlights(res)
         })
         .catch((err) => console.log(err));
     }, []);
@@ -23,7 +23,7 @@ const Home = (props) => {
           {
               flights ? flights.map((flight) =>{
               return (
-                  <Flight flight={flight} key={flight.idFlight}/>
+                  <Flight key={flight.id} flight={flight}/>
                 )
               })
               : null

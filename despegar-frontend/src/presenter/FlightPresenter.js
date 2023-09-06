@@ -8,7 +8,7 @@ export const flightPresenter = () => {
 
     const {getMock} = flightPresenterMock()
 
-    const getFlights = async (idUser) => {
+    const getFlights = async (from, to) => {
         try {
 
             if(useMock == 'true'){
@@ -17,9 +17,11 @@ export const flightPresenter = () => {
 
             const res = await axios.get(`${baseUrl}/flights`, {
                 params: {
-                  idUser: idUser
+                    from: from,
+                    to: to
                 }
               });
+              console.log(res)
 
             const result = await res.data;
 
