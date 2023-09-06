@@ -212,7 +212,7 @@ def get_flights():
 
 
 @app.route("/book-flight", methods=["GET"])
-def get_flights():
+def get_flight_book():
     try:
         response = None
         client_id = request.form.get("client_id")
