@@ -69,7 +69,7 @@ def signup():
         name = request.form.get("name")
         email = request.form.get("email")
         document = int(request.form.get("document"))
-        phone = int(request.form.get("phone"))
+        phone = request.form.get("phone")
         address = request.form.get("address")
         city = request.form.get("city")
         birthday = datetime.strptime(request.form.get("birthday"), '%d/%m/%Y')
@@ -201,7 +201,7 @@ def get_flights():
         date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
         date_to = datetime.strptime(request.args.get("to"), '%d/%m/%Y')
         flights = Flights.query.filter(
-            Flights.date.between(date_from, date_to)).all()
+            Flights.departure_datetime.between(date_from, date_to)).all()
         response = []
         for flight in flights:
             response.append(flight_mapper(flight))
