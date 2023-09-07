@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router'
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+import { userPresenter } from '../../presenter/UserPresenter'
+
 import {
   Grid,
   Typography,
@@ -23,43 +23,40 @@ import {
 export const Register = () => {
 
     const navigate = useNavigate();
+
+    const { register } = userPresenter()
   
-    const [tipoUsuario, setTipoUsuario] = useState(0);
-    const [errTipoUsuario, setErrTipoUsuario] = useState("");
+    const [address, setAddress] = useState("");
+    const [errAddress, setErrAddress] = useState("");
   
     const [visible, setVisible] = useState(false);
-    const [cargando, setCargando] = useState(true);
   
-    const [nombre, setNombre] = useState("");
+    const [name, setNombre] = useState("");
     const [errNombre, setErrNombre] = useState("");
   
-    const [apellido, setApellido] = useState("");
-    const [errApellido, setErrApellido] = useState("");
+    const [phone, setPhone] = useState("");
+    const [errPhone, setErrPhone] = useState("");
+
+    const [city, setCity] = useState("");
+    const [errCity, setErrCity] = useState("");
   
+    const [sex, setSex] = useState("");
+    const [errSex, setErrSex] = useState("");
+    
+    const [bithdate, setBithDate] = useState("");
+    const [errBithDate, setErrBithDate] = useState("");
+
     const [dni, setDni] = useState("");
     const [errDni, setErrDni] = useState("");
   
     const [email, setEmail] = useState("");
     const [errEmail, setErrEmail] = useState("");
   
-    const [username, setUsername] = useState("");
-    const [errUserName, setErrUserName] = useState("");
-  
     const [password, setPassword] = useState("");
     const [errPass, setErrPass] = useState("");
   
     const [alertMsg, setAlertMsg] = useState("");
     const [alertSeverity, setAlertSeverity] = useState("")
-  
-  
-    const call_setUsername = (val) => {
-      if (val === "") {
-        setErrUserName("Este campo no puede estar vacio")
-      } else {
-        setErrUserName("")
-      }
-      setUsername(val)
-    }
   
     const call_setPassword = (val) => {
       if (val === "") {
@@ -79,13 +76,13 @@ export const Register = () => {
       setNombre(val)
     }
   
-    const call_setApellido = (val) => {
+    const call_setPhone = (val) => {
       if (val === "") {
-        setErrApellido("Este campo no puede estar vacio")
+        setErrPhone("Este campo no puede estar vacio")
       } else {
-        setErrApellido("")
+        setErrPhone("")
       }
-      setApellido(val)
+      setPhone(val)
     }
   
     const call_setDni = (val) => {
@@ -107,67 +104,123 @@ export const Register = () => {
       }
     }
   
-    const call_setTipoUsuario = (val) => {
+    const call_setAddress = (val) => {
       if (val !== "") {
-        setErrTipoUsuario("");
-        setTipoUsuario(val);
+        setErrAddress("");
+        setAddress(val);
       } else {
-        setErrTipoUsuario("Este campo no puede estar vacio");
-        setEmail(val);
+        setErrAddress("Este campo no puede estar vacio");
+        setAddress(val);
+      }
+    }
+
+    const call_setSex = (val) => {
+      if (val !== "") {
+        setErrSex("");
+        setSex(val);
+      } else {
+        setErrSex("Este campo no puede estar vacio");
+        setSex(val);
+      }
+    }
+
+    const call_setCity = (val) => {
+      if (val !== "") {
+        setErrCity("");
+        setCity(val);
+      } else {
+        setErrCity("Este campo no puede estar vacio");
+        setCity(val);
+      }
+    }
+
+    const call_setBithDate = (val) => {
+      if (val !== "") {
+        setErrBithDate("");
+        setBithDate(val);
+      } else {
+        setErrBithDate("Este campo no puede estar vacio");
+        setBithDate(val);
       }
     }
   
     const clear = () => {
       setNombre("");
-      setApellido("");
+      setPhone("");
+      setAddress("");
       setDni("");
       setEmail("");
       setUsername("");
       setPassword("");
+      setSex("");
+      setCity("");
+      setBithDate("");
   
       setErrNombre("");
-      setErrApellido("");
+      setErrPhone("");
+      setErrAddress("");
       setErrDni("");
       setErrEmail("");
       setErrUserName("");
       setErrPass("");
+      setErrSex("");
+      setErrCity("");
+      setErrBithDate("");
   
       setVisible(false);
   
     }
   
     const validate = () => {
-      let retorno = true;
-      if (nombre === "") {
-        setErrNombre("Este campo es requerido");
-        retorno = false;
-      }
-      if (apellido === "") {
-        setErrApellido("Este campo es requerido");
-        retorno = false;
-      }
-      if (dni === "") {
-        setErrDni("Este campo es requerido");
-        retorno = false;
-      }
+      let valid = true;
+      
       if (email === "") {
         setErrEmail("Este campo es requerido");
-        retorno = false;
-      }
-      if (username === "") {
-        setErrUserName("Este campo es requerido");
-        retorno = false;
+        console.log("Este campo es requerido = email")
+        valid = false;
       }
       if (password === "") {
         setErrPass("Este campo es requerido");
-        retorno = false;
+        console.log("Este campo es requerido = password")
+        valid = false;
       }
-      if (tipoUsuario === "") {
-        setErrPass("Este campo es requerido");
-        retorno = false;
+      if (name === "") {
+        setErrNombre("Este campo es requerido");
+        console.log("Este campo es requerido = name")
+        valid = false;
       }
-  
-      return retorno;
+      if (dni === "") {
+        setErrDni("Este campo es requerido");
+        console.log("Este campo es requerido = dni")
+        valid = false;
+      }
+      if (sex === "") {
+        setErrSex("Este campo es requerido");
+        console.log("Este campo es requerido = sex")
+        valid = false;
+      }
+      if (bithdate === "") {
+        setErrBithDate("Este campo es requerido");
+        console.log("Este campo es requerido = bithdate")
+        valid = false;
+      }
+      if (address === "") {
+        setErrAddress("Este campo es requerido");
+        console.log("Este campo es requerido = address")
+        valid = false;
+      }
+      if (phone === "") {
+        setErrPhone("Este campo es requerido");
+        console.log("Este campo es requerido = phone")
+        valid = false;
+      }
+      if (city === "") {
+        setErrCity("Este campo es requerido");
+        console.log("Este campo es requerido = city")
+        valid = false;
+      }
+
+      return valid;
     }
 
     const handleMouseDownPassword = (event) => {
@@ -179,24 +232,32 @@ export const Register = () => {
       if (formOK) {
         try {
           const newUser = {
-            "idUsuario": 0,
-            "nombre": nombre,
-            "apellido": apellido,
-            "dni": dni,
+            "id": 0,
+            "name": name,
             "email": email.toString(),
-            "usuario": username,
-            "clave": password,
-            "idTipoUsuario": tipoUsuario
+            "document": dni,
+            "phone": phone,
+            "address": address,
+            "city": city,
+            "bithdate": bithdate,
+            "sex": sex,
+            "password": password
           }
-        //   await altaUsuario(newUser)
-          alert("Usuario Creado")
-          navigate("/login")
+          console.log("new user =>", newUser)
+          let res = await register(newUser)
+          if(res){
+            alert("Usuario Creado")
+            navigate("/login")
+          }
         } catch (error) {
           console.log(error)
           setAlertSeverity("error")
           setAlertMsg("Error, intente nuevamente")
         }
   
+      }
+      else{
+        console.log("Error register complete")
       }
     }
     const goLogin = () => {
@@ -221,17 +282,19 @@ export const Register = () => {
                 <Grid item container>
                   <TextField
                     fullWidth
-                    id="userName"
-                    label="Usuario"
+                    id="email"
+                    label="Email"
                     variant="outlined"
-                    value={username}
-                    onChange={e => { call_setUsername(e.target.value) }}
-                    error={errUserName !== "" ? true : false}
-                    helperText={errUserName}
+                    value={email}
+                    onChange={e => { call_setEmail(e.target.value) }}
+                    error={errEmail !== "" ? true : false}
+                    helperText={errEmail}
                   />
                 </Grid>
                 <Grid item container>
-                    <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+                    <FormControl sx={{ m: 1, width: '100%' }} 
+                                 variant="outlined"
+                                 onChange={e => { call_setPassword(e.target.value) }}>
                         <InputLabel htmlFor="outlined-adornment-password">
                             Password
                         </InputLabel>
@@ -258,27 +321,16 @@ export const Register = () => {
                 </Grid>
 
                 <hr style={{ width: "100%" }} />
+
                 <Grid container item>
                   <TextField
                     fullWidth
                     id="nombre"
                     label="Nombre"
                     variant="outlined"
-                    value={nombre}
+                    value={name}
                     onChange={e => { call_setNombre(e.target.value) }}
                     error={errNombre !== "" ? true : false}
-                    helperText={errNombre}
-                  />
-                </Grid>
-                <Grid container item>
-                  <TextField
-                    fullWidth
-                    id="apellido"
-                    label="Apellido"
-                    variant="outlined"
-                    value={apellido}
-                    onChange={e => { call_setApellido(e.target.value) }}
-                    error={errApellido !== "" ? true : false}
                     helperText={errNombre}
                   />
                 </Grid>
@@ -297,13 +349,64 @@ export const Register = () => {
                 <Grid container item>
                   <TextField
                     fullWidth
-                    id="email"
-                    label="Email"
+                    id="sex"
+                    label="Sexo"
                     variant="outlined"
-                    value={email}
-                    onChange={e => { call_setEmail(e.target.value) }}
-                    error={errEmail !== "" ? true : false}
-                    helperText={errEmail}
+                    value={sex}
+                    onChange={e => { call_setSex(e.target.value) }}
+                    error={errSex !== "" ? true : false}
+                    helperText={errSex}
+                  />
+                </Grid>
+                <Grid container item>
+                  <TextField
+                    fullWidth
+                    id="bithdate"
+                    label="fecha de nacimiento"
+                    variant="outlined"
+                    value={bithdate}
+                    onChange={e => { call_setBithDate(e.target.value) }}
+                    error={errBithDate !== "" ? true : false}
+                    helperText={errBithDate}
+                  />
+                </Grid>
+
+                <hr style={{ width: "100%" }} />
+
+                <Grid container item>
+                  <TextField
+                    fullWidth
+                    id="direccion"
+                    label="Direccion"
+                    variant="outlined"
+                    value={address}
+                    onChange={e => { call_setAddress(e.target.value) }}
+                    error={errAddress !== "" ? true : false}
+                    helperText={errAddress}
+                  />
+                </Grid>
+                <Grid container item>
+                  <TextField
+                    fullWidth
+                    id="phone"
+                    label="Telefono"
+                    variant="outlined"
+                    value={phone}
+                    onChange={e => { call_setPhone(e.target.value) }}
+                    error={errPhone !== "" ? true : false}
+                    helperText={errPhone}
+                  />
+                </Grid>
+                <Grid container item>
+                  <TextField
+                    fullWidth
+                    id="city"
+                    label="Ciudad"
+                    variant="outlined"
+                    value={city}
+                    onChange={e => { call_setCity(e.target.value) }}
+                    error={errCity !== "" ? true : false}
+                    helperText={errCity}
                   />
                 </Grid>
               </Grid>

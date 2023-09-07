@@ -46,6 +46,36 @@ export const userPresenter = () => {
             };
 
             const res = await axios.post(`${baseUrl}/signin`, body, { headers });
+            return res.data;
+        } catch (err) {
+            console.log('err => ' , err)
+        }
+    }
+
+    const register = async (user) => {
+        try {
+            if(useMock == 'true'){
+                return getMock()
+            }
+
+            const body = {
+                "password": user.password,
+                "name": user.name,
+                "email": user.email,
+                "document": user.document,
+                "phone": user.phone,
+                "address": user.address,
+                "city": user.city,
+                "birthday": user.bithdate,
+                "sex": user.sex         
+              }
+
+            const headers = 
+            {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            };
+
+            const res = await axios.post(`${baseUrl}/signup`, body, { headers });
             console.log("res =>", res)
             return res.data;
         } catch (err) {
@@ -55,6 +85,7 @@ export const userPresenter = () => {
 
     return {
         getById,
-        login
+        login,
+        register
     }
 }

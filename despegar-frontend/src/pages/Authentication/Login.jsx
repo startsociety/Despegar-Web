@@ -17,11 +17,9 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Link } from 'react-router-dom';
 import { userPresenter } from '../../presenter/UserPresenter'
-// import { useLocalStorage } from './helpers/useLocalStorage';
 
 const Login = (props) => {
   const { user, setUser } = props;
-  // const { traerIdUsuario } = useUsuarioPresenter()
   const navigate = useNavigate();
 
   const {login} = userPresenter()
@@ -73,9 +71,10 @@ const Login = (props) => {
             const res = await login(email, password);
             if(res.user){
               setUser(res.user)
+              clear()
               navigate({
                 pathname:"/home",
-                  }) 
+                  })               
             } else{
                 setErrorLogin("error, verifique email y contraseña")
             }
@@ -87,16 +86,16 @@ const Login = (props) => {
   }
 
   const validate = () => {
-      let retorno = true;
+      let valid = true;
       if (email === "") {
           setErrEmail("Este campo es requerido");
-          retorno = false;
+          valid = false;
       }
       if (password === "") {
           setErrPass("Este campo es requerido");
-          retorno = false;
+          valid = false;
       }
-      return retorno;
+      return valid;
   }
 
     return (
