@@ -29,20 +29,25 @@ export const userPresenter = () => {
         }
     }
 
-    const login = async (username, password) => {
+    const login = async (email, password) => {
         try {
             if(useMock == 'true'){
                 return getMock()
             }
 
             const body = {
-                user: username,
+                email: email,
                 password: password
             }
-            console.log(`${baseUrl}/user/login`, body)
-            const res = await axios.post(`${baseUrl}/user/login`, body);
-            
-            return res;
+
+            const headers = 
+            {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            };
+
+            const res = await axios.post(`${baseUrl}/signin`, body, { headers });
+            console.log("res =>", res)
+            return res.data;
         } catch (err) {
             console.log('err => ' , err)
         }

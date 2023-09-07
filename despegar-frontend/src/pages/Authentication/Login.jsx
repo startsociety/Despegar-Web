@@ -27,21 +27,21 @@ const Login = (props) => {
   const {login} = userPresenter()
   const [visible, setVisible] = useState(false);
 
-  const [username, setUsername] = useState("");
-  const [errUserName, setErrUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [errUserName, setErrEmail] = useState("");
 
   const [password, setPassword] = useState("");
   const [errPass, setErrPass] = useState("");
 
   const [errorLogin, setErrorLogin] = useState("");
 
-  const call_setUsername = (val) => {
+  const call_setEmail = (val) => {
       if (val === "") {
-          setErrUserName("este campo no puede estar vacio")
+          setErrEmail("este campo no puede estar vacio")
       } else {
-          setErrUserName("")
+          setErrEmail("")
       }
-      setUsername(val)
+      setEmail(val)
   }
 
   const call_setPassword = (val) => {
@@ -54,9 +54,9 @@ const Login = (props) => {
   }
 
   const clear = () => {
-      setUsername("");
+      setEmail("");
       setPassword("");
-      setErrUserName("");
+      setErrEmail("");
       setErrPass("");
       setVisible(false);
   }
@@ -70,26 +70,26 @@ const Login = (props) => {
 
       if(valid){
         try {          
-            const res = await login(username, password);
+            const res = await login(email, password);
             if(res.user){
               setUser(res.user)
               navigate({
                 pathname:"/home",
                   }) 
             } else{
-                setErrorLogin("error, verifique usuario y contraseña")
+                setErrorLogin("error, verifique email y contraseña")
             }
         } catch (error) {
             console.log(error)
-            setErrorLogin("error, verifique usuario y contraseña")
+            setErrorLogin("error, verifique email y contraseña")
         }
       }
   }
 
   const validate = () => {
       let retorno = true;
-      if (username === "") {
-          setErrUserName("Este campo es requerido");
+      if (email === "") {
+          setErrEmail("Este campo es requerido");
           retorno = false;
       }
       if (password === "") {
@@ -112,11 +112,11 @@ const Login = (props) => {
                 <Grid container item >
                     <TextField
                         style={{margin: 8, width:"95%"}}
-                        id="userName"
-                        label="Nombre de usuario"
+                        id="email"
+                        label="Email"
                         variant="outlined"
-                        value={username}
-                        onChange={e=>{call_setUsername(e.target.value)}}
+                        value={email}
+                        onChange={e=>{call_setEmail(e.target.value)}}
                         error= {errUserName !== "" ? true : false}
                         helperText = {errUserName}
                         

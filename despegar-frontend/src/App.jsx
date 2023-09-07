@@ -16,7 +16,7 @@ function App() {
     return (
       <>
       <BrowserRouter>
-        <NavBar user={user} setUser />
+        <NavBar user={user} setUser={setUser} />
         <Routes>
             <Route index element={user ? <Home /> : <Login user={user} setUser={setUser}/>} />
             <Route path="/login" element={<Login user={user} setUser={setUser}/>} />
