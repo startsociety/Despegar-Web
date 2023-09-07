@@ -17,7 +17,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-@app.before_request
+#@app.before_request
 def check_authentication():
     try:
         if request.path not in get_env_vars("PUBLIC_ROUTES"):
@@ -35,7 +35,7 @@ def check_authentication():
 def signin():
     try:
         response = None
-
+        
         email = request.form.get("email")
         password = request.form.get("password")
 
@@ -43,13 +43,15 @@ def signin():
             and_(Clients.email == email, Clients.password == password)).first()
 
         if (existing_user):
-            access_token = jwt.encode({
-                "exp": int(time.time()+3600),
-                "email": existing_user.email
-            }, get_env_vars("JWT_PRIVATE_KEY"), algorithm='RS256')
-
             response = Response(json.dumps(
-                {"access_token": access_token, "type": "Bearer"}), status=200, mimetype='application/json')
+                {"user": client_mapper(existing_user)}), status=200, mimetype='application/json')
+            # access_token = jwt.encode({
+            #     "exp": int(time.time()+3600),
+            #     "email": existing_user.email
+            # }, get_env_vars("JWT_PRIVATE_KEY"), algorithm='RS256')
+
+            # response = Response(json.dumps(
+            #     {"access_token": access_token, "type": "Bearer"}), status=200, mimetype='application/json')
         else:
             response = Response('Invalid credentials or non-existent client',
                                 status=401, mimetype='application/json')
