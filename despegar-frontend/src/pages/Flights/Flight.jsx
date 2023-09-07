@@ -1,5 +1,4 @@
 import React from "react";
-import avion from '../../assets/avion.jpg'; 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -7,9 +6,15 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import { useNavigate } from 'react-router'
 
+import vuelo1 from '../../assets/vuelo1.jpg'
+import vuelo2 from '../../assets/vuelo2.jpg'
+import vuelo3 from '../../assets/vuelo3.jpg'
+import vuelo4 from '../../assets/vuelo4.png'
+
 const Flight = (props) => {
    const {flight} = props
    const navigate = useNavigate();
+   const images = [vuelo1, vuelo2, vuelo3, vuelo4]
 
    const toBookFlight = () => { navigate("/book-flight") }
 
@@ -19,7 +24,7 @@ const Flight = (props) => {
                 <CardMedia
                     component="img"
                     height="140"
-                    image={avion}
+                    image={images[Math.floor(Math.random() * images.length)]}
                     alt="Vuelo"
                 />
                 <CardContent>
