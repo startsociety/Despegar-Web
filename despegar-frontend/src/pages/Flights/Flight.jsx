@@ -10,6 +10,7 @@ import vuelo1 from '../../assets/vuelo1.jpg'
 import vuelo2 from '../../assets/vuelo2.jpg'
 import vuelo3 from '../../assets/vuelo3.jpg'
 import vuelo4 from '../../assets/vuelo4.png'
+import { FlightDetails } from "./FightDetails";
 
 const Flight = (props) => {
    const {flight} = props
@@ -19,7 +20,7 @@ const Flight = (props) => {
    const toBookFlight = () => { navigate("/book-flight") }
 
     return (
-        <Card elevation={3} sx={{ maxWidth: 345, minWidth: 345, margin: 2 }}>
+        <Card elevation={3} sx={{ maxWidth: 245, minWidth: 245, margin: 2 }}>
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -32,14 +33,12 @@ const Flight = (props) => {
                     {`${flight.origin} a ${flight.destination}`}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                    {`$${flight.price}`}
+                    Desde {`$${flight.price}`}
                     </Typography>
                 </CardContent>
             </CardActionArea>
             <CardActions>
-            <Button size="small" color="primary">
-                Ver detalles
-            </Button>
+            <FlightDetails idFlightIda={flight.id} idFlightVuelta={flight.id}/>
             <Button size="small" color="primary" onClick={toBookFlight}>
                 Reservar
             </Button>

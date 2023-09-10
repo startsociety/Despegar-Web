@@ -31,7 +31,25 @@ export const flightPresenter = () => {
         }
     }
 
+    const getById = async (idFlight) => {
+        try {
+
+            if(useMock == 'true'){
+                return getMock()
+            }
+
+            const res = await axios.get(`${baseUrl}/flight/${idFlight}`);
+
+            const result = await res.data;
+
+            return result
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     return {
         getFlights,
+        getById
     }
 }

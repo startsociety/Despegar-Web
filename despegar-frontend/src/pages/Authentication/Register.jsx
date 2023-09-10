@@ -243,7 +243,7 @@ export const Register = () => {
             "sex": sex,
             "password": password
           }
-          console.log("new user =>", newUser)
+          
           let res = await register(newUser)
           if(res){
             alert("Usuario Creado")

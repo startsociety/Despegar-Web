@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
 import Flight from "./Flights/Flight";
+import { Container } from "@mui/material";
 
 const Home = (props) => {
    const [flights, setFlights] = useState([]);
@@ -18,8 +19,8 @@ const Home = (props) => {
     }, []);
 
     return (
-      <Box sx={{ flexGrow: 1, margin: 5 }}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      <Container sx={{  justifySelf:'center', alignSelf: 'center', marginTop:'2%'}}>
+        <Grid container rowSpacing={1} >
           {
               flights ? flights.map((flight) =>{
               return (
@@ -29,7 +30,7 @@ const Home = (props) => {
               : null
           }
         </Grid>
-      </Box>
+      </Container>
     );
   }
 
