@@ -58,6 +58,26 @@ def insertNewClient(name, email, document, phone, address, city, birthday, sex, 
         print("Error al insertar el cliente:", str(e))
     finally:
         session.close()
+
+def insertNewAirport(code, name, city, country):
+    new_airport = Airport(
+        code=code,
+        name=name,
+        city=city,
+        country=country
+    )
+
+    try:
+        session.add(new_airport)
+        session.commit()
+        print("Nuevo aeropuerto insertado correctamente")
+    except Exception as e:
+        session.rollback()
+        print("Error al insertar el aeropuerto:", str(e))
+    finally:
+        session.close()
+
+
             
 insertNewFlight(
     departure_datetime=datetime(2023, 10, 20, 11, 30, 0),
@@ -236,5 +256,150 @@ insertNewClient(
     sex='Femenino',
     password='secreto987'
 )
+
+insertNewAirport(
+    code="EZE",
+    name="Aeropuerto Internacional Ministro Pistarini",
+    city="Buenos Aires",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="AEP",
+    name="Aeroparque Jorge Newbery",
+    city="Buenos Aires",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="COR",
+    name="Aeropuerto Internacional Ingeniero Ambrosio Taravella",
+    city="Córdoba",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="MDQ",
+    name="Aeropuerto Internacional Astor Piazzolla",
+    city="Mar del Plata",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="SLA",
+    name="Aeropuerto Internacional Martín Miguel de Güemes",
+    city="Salta",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="ROS",
+    name="Aeropuerto Internacional Rosario - Islas Malvinas",
+    city="Rosario",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="FTE",
+    name="Aeropuerto Internacional El Calafate",
+    city="El Calafate",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="IGR",
+    name="Aeropuerto Internacional Cataratas del Iguazú",
+    city="Puerto Iguazú",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="USH",
+    name="Aeropuerto Internacional Malvinas Argentinas",
+    city="Ushuaia",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="BRC",
+    name="Aeropuerto Internacional San Carlos de Bariloche",
+    city="San Carlos de Bariloche",
+    country="Argentina"
+)
+
+# Llama a la función insertNewAirport con más datos de aeropuertos
+insertNewAirport(
+    code="BHI",
+    name="Aeropuerto Internacional Comandante Espora",
+    city="Bahía Blanca",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="CRD",
+    name="Aeropuerto Internacional General E. Mosconi",
+    city="Comodoro Rivadavia",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="RGA",
+    name="Aeropuerto Internacional Piloto Civil Norberto Fernández",
+    city="Río Grande",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="LUQ",
+    name="Aeropuerto Internacional Brigadier Mayor César Raúl Ojeda",
+    city="San Luis",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="FMA",
+    name="Aeropuerto Internacional Formosa",
+    city="Formosa",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="NQN",
+    name="Aeropuerto Internacional Presidente Perón",
+    city="Neuquén",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="PMY",
+    name="Aeropuerto Internacional General Enrique Mosconi",
+    city="Puerto Madryn",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="TCN",
+    name="Aeropuerto General Fernández Oro",
+    city="Cipolletti",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="RSA",
+    name="Aeropuerto Internacional Santa Rosa",
+    city="Santa Rosa",
+    country="Argentina"
+)
+
+insertNewAirport(
+    code="REL",
+    name="Aeropuerto Internacional Almirante Marcos A. Zar",
+    city="Trelew",
+    country="Argentina"
+)
+
+
+
+
 
 
