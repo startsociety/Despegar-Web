@@ -23,3 +23,14 @@ def flight_mapper(flight_data):
         "price": float(flight_data.price),
         "capacity": int(flight_data.capacity)
     }
+
+def airport_mapper(airport_data):
+    return {
+        "id": airport_data.id,
+        "code": airport_data.code,
+        "name": airport_data.name,
+        "city": airport_data.city,
+        "country": airport_data.country
+    }
+
+
