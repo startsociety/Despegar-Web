@@ -45,6 +45,14 @@ class ClientsFlight(Base):
     flight_id = Column(ForeignKey("flights.id"), nullable=False)
     seat = Column(String, nullable=False)
 
+class Airport(Base):
+    __tablename__ = "airports"
+
+    id = Column(Integer, primary_key=True)
+    code = Column(String, unique=True, nullable=False)
+    name = Column(String, nullable=False)
+    city = Column(String, nullable=False)
+    country = Column(String, nullable=False)
 
 Base.metadata.create_all(
     engine, Base.metadata.tables.values(), checkfirst=True)
