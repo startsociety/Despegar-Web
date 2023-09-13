@@ -5,9 +5,8 @@ from datetime import datetime
 import json
 import logging
 import jwt
-import time
 
-from database import db_session, Clients, Flights, ClientsFlight
+from database import db_session, Clients, Flights, ClientsFlight, Airports
 from config import get_env_vars
 from mappers import *
 
@@ -17,7 +16,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-#@app.before_request
+# @app.before_request
 def check_authentication():
     try:
         if request.path not in get_env_vars("PUBLIC_ROUTES"):
@@ -35,7 +34,7 @@ def check_authentication():
 def signin():
     try:
         response = None
-        
+
         email = request.form.get("email")
         password = request.form.get("password")
 
@@ -200,13 +199,58 @@ def get_flight(id):
 @app.route("/flights", methods=["GET"])
 def get_flights():
     try:
-        date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
-        date_to = datetime.strptime(request.args.get("to"), '%d/%m/%Y')
-        flights = Flights.query.filter(
-            Flights.departure_datetime.between(date_from, date_to)).all()
+        filters = set()
+
+        if request.args.get("from") and request.args.get("to"):
+            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+            date_to = datetime.strptime(request.args.get("to"), '%d/%m/%Y')
+            filters.add(Flights.departure_datetime.between(date_from, date_to))
+
+        elif request.args.get("from"):
+            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+            date_to = datetime.strptime("12/12/2999", '%d/%m/%Y')
+            filters.add(Flights.departure_datetime.between(date_from, date_to))
+
+        elif request.args.get("to"):
+            date_to = datetime.strptime(request.args.get("to"), '%d/%m/%Y')
+            now = datetime.now()
+            filters.add(Flights.departure_datetime.between(now, date_to))
+
+        if request.args.get("origin"):
+            origin = request.args.get("origin")
+            filters.add(Flights.origin == origin)
+
+        if request.args.get("destination"):
+            destination = request.args.get("destination")
+            filters.add(Flights.destination == destination)
+
+        if request.args.get("price_min") and request.args.get("price_max"):
+            price_min = float(request.args.get("price_min"))
+            price_max = float(request.args.get("price_max"))
+            filters.add(Flights.price.between(price_min, price_max))
+
+        elif request.args.get("price_min"):
+            price_min = float(request.args.get("price_min"))
+            filters.add(Flights.price.between(price_min, float(9999999999)))
+
+        elif request.args.get("price_max"):
+            price_max = float(request.args.get("price_max"))
+            filters.add(Flights.price.between(float(0), price_max))
+
+        if request.args.get("max_flight_time"):
+            max_flight_time = datetime.time(
+                request.args.get("max_flight_time"))
+            filters.add(Flights.flight_time <= max_flight_time)
+
+        flights = Flights.query.filter(*filters).all()
+
         response = []
         for flight in flights:
-            response.append(flight_mapper(flight))
+            origin_airport_data = Airports.query.get(flight.origin)
+            destination_airport_data = Airports.query.get(flight.destination)
+
+            response.append(flight_mapper(
+                flight, origin_airport_data, destination_airport_data))
         return Response(json.dumps(response), status=200, mimetype='application/json')
 
     except Exception as e:
@@ -240,6 +284,35 @@ def get_flight_book():
                 flight.id, client.document), status=201, mimetype='application/json')
         return response
 
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/airports", methods=["GET"])
+def get_airports():
+    try:
+        airports = Airports.query.all()
+        response = []
+        for airport in airports:
+            response.append(airport_mapper(airport))
+        return Response(json.dumps(response), status=200, mimetype='application/json')
+
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/client/<id>", methods=["GET"])
+def get_airport(id):
+    try:
+        response = None
+        airport_data = Airports.query.get(id)
+        if airport_data is None:
+            response = Response('Airport with id {} does not exist'.format(
+                id), status=404, mimetype='application/json')
+        else:
+            response = Response(json.dumps(client_mapper(
+                airport_data)), status=200, mimetype='application/json')
+        return response
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
 
