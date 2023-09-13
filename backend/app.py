@@ -301,7 +301,7 @@ def get_airports():
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
 
 
-@app.route("/client/<id>", methods=["GET"])
+@app.route("/airport/<id>", methods=["GET"])
 def get_airport(id):
     try:
         response = None
@@ -310,7 +310,7 @@ def get_airport(id):
             response = Response('Airport with id {} does not exist'.format(
                 id), status=404, mimetype='application/json')
         else:
-            response = Response(json.dumps(client_mapper(
+            response = Response(json.dumps(airport_mapper(
                 airport_data)), status=200, mimetype='application/json')
         return response
     except Exception as e:
