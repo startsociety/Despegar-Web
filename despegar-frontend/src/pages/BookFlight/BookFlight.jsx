@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { Button, Chip, Container } from "@mui/material";
+import { Chip, Container } from "@mui/material";
 import { flightPresenter } from "../../presenter/FlightPresenter";
-import HorizontalLinearStepper from "./BookStepper";
-import { blueGrey } from "@mui/material/colors";
 
 export const BookFlight = (props) => {
   const { getSeatingFlight } = flightPresenter();

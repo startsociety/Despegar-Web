@@ -8,6 +8,7 @@ import { Register } from './pages/Authentication/Register';
 import { Profile } from './pages/Profile/Profile';
 import { Flights } from './pages/Flights/Flights';
 import { BookFlight } from './pages/BookFlight/BookFlight';
+import { BookFlightStepper } from './pages/BookFlight/BookStepper';
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/flights" element={<Flights />} />
-            <Route path="/book-flight" element={<BookFlight />} />
+            <Route path="/book-flight" element={<BookFlightStepper />} />
         </Routes>
       </BrowserRouter>
       </>

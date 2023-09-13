@@ -5,11 +5,12 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { AddPassengers } from './AddPassengers';
 
 
 const steps = ['Seleccionar asientos', '¿Quienes viajan?', 'Confirmar'];
 
-export default function HorizontalLinearStepper() {
+export const BookFlightStepper = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
@@ -87,7 +88,7 @@ export default function HorizontalLinearStepper() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+          <AddPassengers></AddPassengers>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
