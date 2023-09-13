@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import { Button, Chip, Container } from "@mui/material";
 import { flightPresenter } from "../../presenter/FlightPresenter";
 import HorizontalLinearStepper from "./BookStepper";
+import { blueGrey } from "@mui/material/colors";
 
 export const BookFlight = (props) => {
   const { getSeatingFlight } = flightPresenter();
@@ -43,16 +44,17 @@ export const BookFlight = (props) => {
 
   function getColor(ubication) {
     if (ubication.status === 3) {
-      return "#0000FF";
+      return "#3cbabf";
     }
 
-    return ubication.status === 1 ? "#19BA46" : "#F6CD59";
+    return ubication.status === 1 ? "#19BA46" : "#808080";
   }
 
   return (
-    <Container sx={{  marginTop: "2%" }}>
-      <h1>Elegir asientos...</h1>
-      <HorizontalLinearStepper></HorizontalLinearStepper>
+    <Container sx={{  marginTop: "2%"}}>
+
+      <Box sx={{color:'purple'}}><h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>Reserve sus asientos</h1></Box>
+      
       <Grid container spacing={1}>
         {seating.map((array, rowIndex) => (
           <Box marginTop={rowIndex === 1 || rowIndex === 5 ? 5 : 1} key={rowIndex}>
@@ -80,10 +82,14 @@ export const BookFlight = (props) => {
           </Box>
         ))}
       </Grid>
-      <h5>Asientos selectionados:</h5>
+
+      {/* <h5>Asientos selectionados:</h5>
       {selectedSeating.map((position, columnIndex) => (
           <body2>{position} </body2>
-        ))}
+        ))} */}
+      <Box sx={{  marginTop: "60px"}}><HorizontalLinearStepper ></HorizontalLinearStepper></Box>
     </Container>
+    
   );
+
 };

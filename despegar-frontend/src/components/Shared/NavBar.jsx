@@ -54,7 +54,7 @@ export const NavBar = (props) => {
                 display: { xs: 'none', md: 'flex' },
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontFamily: 'monospace',
+                fontFamily: 'system-ui',
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 color: 'white',
