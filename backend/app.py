@@ -189,8 +189,11 @@ def get_flight(id):
             response = Response('Flight with id {} does not exist'.format(
                 id), status=404, mimetype='application/json')
         else:
+            origin_airport_data = Airports.query.get(flight_data.origin)
+            destination_airport_data = Airports.query.get(
+                flight_data.destination)
             response = Response(json.dumps(flight_mapper(
-                flight_data)), status=200, mimetype='application/json')
+                flight_data, origin_airport_data, destination_airport_data)), status=200, mimetype='application/json')
         return response
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
