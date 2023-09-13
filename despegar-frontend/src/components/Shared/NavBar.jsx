@@ -16,10 +16,8 @@ export const NavBar = (props) => {
   const { user, setUser } = props;
   const navigate = useNavigate();
 
-  const toRegister = () => { navigate("/register") }
   const toLogin = () => { navigate("/login") }
   const toProfile = () => { navigate("/profile") }
-  const toHome = () => { navigate("/home") }
   const toFlights = () => { navigate("/flights") }
     
   const logout = () => {

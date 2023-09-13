@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { Chip, Container } from "@mui/material";
 import { flightPresenter } from "../../presenter/FlightPresenter";
 
 export const BookFlight = (props) => {
+  
   const { getSeatingFlight } = flightPresenter();
+
+  const {booking, setBooking } = props
   const [seating, setSeating] = useState([[]]);
-  const [selectedSeating, setSelectedSeating] = useState([]);
 
   useEffect(() => {
     getSeatingFlight()
@@ -21,26 +22,29 @@ export const BookFlight = (props) => {
   function handleClick(rowIndex, columnIndex) {
     const newSeating = [...seating];
     const position = newSeating[rowIndex][columnIndex].position
+    const newBooking = booking
     if(newSeating[rowIndex][columnIndex].status != 3){
       newSeating[rowIndex][columnIndex].status = 3;
 
-
-      selectedSeating.push(position)
-
+      newBooking.selectedSeating.push(position)
     }else{
-      const newSelectedSeating  = selectedSeating.filter((post) => post !== position);
-      setSelectedSeating(newSelectedSeating)
+      const newSelectedSeating  = newBooking.selectedSeating.filter((post) => post !== position);
+      newBooking["selectedSeating"] = newSelectedSeating
+
+      setBooking(newBooking)
 
       newSeating[rowIndex][columnIndex].status = 1;
     }
-
-
-
+    
     setSeating(newSeating);
   }
 
   function getColor(ubication) {
     if (ubication.status === 3) {
+      return "#3cbabf";
+    }
+    else if(booking.selectedSeating.includes(ubication.position)){
+      ubication.status = 3
       return "#3cbabf";
     }
 
@@ -80,11 +84,10 @@ export const BookFlight = (props) => {
         ))}
       </Grid>
 
-      {/* <h5>Asientos selectionados:</h5>
-      {selectedSeating.map((position, columnIndex) => (
+      <h5>Asientos selectionados:</h5>
+      {booking.selectedSeating.map((position, columnIndex) => (
           <body2>{position} </body2>
-        ))} */}
-      <Box sx={{  marginTop: "60px"}}><HorizontalLinearStepper ></HorizontalLinearStepper></Box>
+        ))} 
     </Container>
     
   );
