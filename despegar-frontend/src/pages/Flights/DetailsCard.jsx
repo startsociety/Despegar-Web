@@ -22,21 +22,16 @@ export const DetailsCard = (props) => {
  const [date, hour] = flight.arrival_datetime ? flight.arrival_datetime.split(" ") : "";
  const [date_departure, hour_departure] =flight.departure_datetime ? flight.departure_datetime.split(" ") : "";
 
- useEffect(() => {
-    console.log("flight DetailsCard=>", flight)
-    
-  }, []);
-
   return (
     <Box sx={{ minWidth: 275, marginTop:1 }}>
       <Card variant="outlined">
         <CardContent>
             <Typography variant="h6" component="h2">
-                {`${title}: ${flight.origin}`} {arrow} {`  ${flight.destination}`}
+                {`${title}: ${flight.origin.city}`} {arrow} {`  ${flight.destination.city}`}
             </Typography>
             
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                {`Origen: Aeropuerto de ${flight.origin}`} 
+                {`Origen: Aeropuerto de ${flight.origin.name}`} 
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {`Fecha: El ${date} a las ${hour}`} 
@@ -45,7 +40,7 @@ export const DetailsCard = (props) => {
                 {`- Duracion ${flight.flight_time} -`} 
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                {`Destino: Aeropuerto de ${flight.destination}`} 
+                {`Destino: Aeropuerto de ${flight.destination.name}`} 
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {`Fecha: El ${date_departure} a las ${hour_departure}`} 

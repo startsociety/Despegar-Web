@@ -13,13 +13,16 @@ const Home = (props) => {
     useEffect(() => {
       getFlights('01/01/1970', '01/01/2970')
         .then((res) => {
+          console.log("res res =>" , res)
           setFlights(res)
+          console.log("res flights =>" , flights)
         })
         .catch((err) => console.log(err));
     }, []);
 
     return (
-      <Container sx={{  justifySelf:'center', alignSelf: 'center', marginTop:'2%'}}>
+        
+      <Container sx={{   marginTop:'2%'}}>
         <Grid container rowSpacing={1} >
           {
               flights ? flights.map((flight) =>{

@@ -137,12 +137,128 @@ export const flightPresenterMock = () => {
             }
         ]
     }
-    
+
+    const resSeating = [
+        [
+            {position: "A1", status:2},
+            {position: "A2", status:2},
+            {position: "A3", status:1},
+            {position: "A4", status:1},
+            {position: "A5", status:1},
+            {position: "A6", status:1},
+            {position: "A7", status:1},
+            {position: "A8", status:1},
+            {position: "A9", status:2},
+            {position: "A10", status:2},
+            {position: "A11", status:2},
+            {position: "A12", status:2},
+            {position: "A13", status:1},
+            {position: "A14", status:1},
+            {position: "A15", status:2},
+            {position: "A16", status:2}
+      ],
+      [
+        {position: "B1", status:2},
+        {position: "B2", status:2},
+        {position: "B3", status:2},
+        {position: "B4", status:1},
+        {position: "B5", status:1},
+        {position: "B6", status:2},
+        {position: "B7", status:2},
+        {position: "B8", status:2},
+        {position: "B9", status:1},
+        {position: "B10", status:1},
+        {position: "B11", status:2},
+        {position: "B12", status:2},
+        {position: "B13", status:1},
+        {position: "B14", status:1},
+        {position: "B15", status:2},
+        {position: "B16", status:1}
+    ],
+    [
+        {position: "C1", status:2},
+        {position: "C2", status:2},
+        {position: "C3", status:1},
+        {position: "C4", status:2},
+        {position: "C5", status:1},
+        {position: "C6", status:1},
+        {position: "C7", status:2},
+        {position: "C8", status:2},
+        {position: "C9", status:2},
+        {position: "C10", status:1},
+        {position: "C11", status:2},
+        {position: "C12", status:2},
+        {position: "C13", status:2},
+        {position: "C14", status:2},
+        {position: "C15", status:2},
+        {position: "C16", status:1}
+    ],
+    [
+        {position: "D1", status:1},
+        {position: "D2", status:2},
+        {position: "D3", status:1},
+        {position: "D4", status:2},
+        {position: "D5", status:1},
+        {position: "D6", status:1},
+        {position: "D7", status:2},
+        {position: "D8", status:2},
+        {position: "D9", status:2},
+        {position: "D10", status:2},
+        {position: "D11", status:2},
+        {position: "D12", status:1},
+        {position: "D13", status:2},
+        {position: "D14", status:2},
+        {position: "D15", status:1},
+        {position: "D16", status:2}
+    ],
+    [
+        {position: "E1", status:2},
+        {position: "E2", status:1},
+        {position: "E3", status:1},
+        {position: "E4", status:2},
+        {position: "E5", status:1},
+        {position: "E6", status:1},
+        {position: "E7", status:2},
+        {position: "E8", status:2},
+        {position: "E9", status:2},
+        {position: "E10", status:2},
+        {position: "E11", status:2},
+        {position: "E12", status:1},
+        {position: "E13", status:1},
+        {position: "E14", status:2},
+        {position: "E15", status:2},
+        {position: "E16", status:1}
+    ],
+    [
+        {position: "F1", status:2},
+        {position: "F2", status:2},
+        {position: "F3", status:2},
+        {position: "F4", status:2},
+        {position: "F5", status:2},
+        {position: "F6", status:2},
+        {position: "F7", status:2},
+        {position: "F8", status:2},
+        {position: "F9", status:2},
+        {position: "F10", status:2},
+        {position: "F11", status:2},
+        {position: "F12", status:2},
+        {position: "F13", status:2},
+        {position: "F14", status:1},
+        {position: "F15", status:2},
+        {position: "F16", status:2}
+    ],
+    ];
+
     const getMock = () => {
         return res   
     }
 
+    const getSeatingMock = () => {
+        return resSeating  
+    }
+
     return {
         getMock,
+        getSeatingMock
     }
 }

@@ -6,13 +6,13 @@ export const flightPresenter = () => {
     const useMock = import.meta.env.VITE_REACT_BACKEND_MOCK
     const baseUrl = import.meta.env.VITE_REACT_BACKEND_URL
 
-    const {getMock} = flightPresenterMock()
+    const {getMock, getSeatingMock} = flightPresenterMock()
 
     const getFlights = async (from, to) => {
         try {
 
             if(useMock == 'true'){
-                return getMock()
+                return getMock().flights
             }
 
             const res = await axios.get(`${baseUrl}/flights`, {
@@ -48,8 +48,13 @@ export const flightPresenter = () => {
         }
     }
 
+    const getSeatingFlight = async () => {
+        return getSeatingMock()
+    }
+
     return {
         getFlights,
+        getSeatingFlight,
         getById
     }
 }

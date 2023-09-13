@@ -30,7 +30,7 @@ const Flight = (props) => {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                    {`${flight.origin} a ${flight.destination}`}
+                    {`${flight.origin.city} a ${flight.destination.city}`}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                     Desde {`$${flight.price}`}

@@ -7,7 +7,7 @@ import { useLocalStorage } from './helpers/useLocalStorage';
 import { Register } from './pages/Authentication/Register';
 import { Profile } from './pages/Profile/Profile';
 import { Flights } from './pages/Flights/Flights';
-import { BookFlight } from './pages/Flights/BookFlight';
+import { BookFlight } from './pages/BookFlight/BookFlight';
 
 function App() {
 
