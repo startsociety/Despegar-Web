@@ -260,13 +260,86 @@ def get_flights():
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
 
 
-@app.route("/book-flight", methods=["GET"])
-def get_flight_book():
+@app.route("/flights-back", methods=["GET"])
+def get_flights_back():
+    try:
+        filters = set()
+
+        if request.args.get("from") and request.args.get("origin"):
+            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+            origin = int(request.args.get("origin"))
+            filters.add(Flights.arrival_datetime > date_from)
+            filters.add(Flights.origin == origin)
+
+        flights = Flights.query.filter(*filters).all()
+
+        response = []
+        for flight in flights:
+            origin_airport_data = Airports.query.get(flight.origin)
+            destination_airport_data = Airports.query.get(flight.destination)
+
+            response.append(flight_mapper(
+                flight, origin_airport_data, destination_airport_data))
+        return Response(json.dumps(response), status=200, mimetype='application/json')
+
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/flight/<flight_id>/seats", methods=["GET"])
+def get_flight_seats(flight_id):
+    try:
+        all_seats = {'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'A5': 1, 'A6': 1,
+                     'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'B5': 1, 'B6': 1,
+                     'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'C5': 1, 'C6': 1,
+                     'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1, 'D5': 1, 'D6': 1,
+                     'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'E5': 1, 'E6': 1,
+                     'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'F5': 1, 'F6': 1}
+
+        response = None
+
+        seats_booked_query = ClientsFlight.query.filter(
+            flight_id == flight_id).all()
+
+        seats_booked_data = []
+
+        for seat_booked_query in seats_booked_query:
+            seats_booked_data.append(clients_flight(seat_booked_query))
+
+        for seat_booked_data in seats_booked_data:
+            all_seats[seat_booked_data["seat"]] = 2
+
+        response = Response(json.dumps(all_seats),
+                            status=201, mimetype='application/json')
+        return response
+
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/book-flight", methods=["POST"])
+def book_flight():
     try:
         response = None
+
+        all_seats = {'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'A5': 1, 'A6': 1,
+                     'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'B5': 1, 'B6': 1,
+                     'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'C5': 1, 'C6': 1,
+                     'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1, 'D5': 1, 'D6': 1,
+                     'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'E5': 1, 'E6': 1,
+                     'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'F5': 1, 'F6': 1}
+
+        response = None
+
+        seats = list(all_seats.keys())
+        #TO-DO: verificar que el asiento al momento de reservar no esté ocupado, reutilizar /flight/<flight_id>/seats
+        if request.form.get("seat"):
+            seat = request.form.get("seat").upper()
+            if seat not in seats:
+                raise ValueError('Seat is not correct')
+
         client_id = request.form.get("client_id")
         flight_id = request.form.get("flight_id")
-        seat = request.form.get("seat")
 
         client = Clients.query.filter_by(id=client_id).first()
         flight = Flights.query.filter_by(id=flight_id).first()
@@ -283,8 +356,8 @@ def get_flight_book():
 
             db_session.add(clients_flight)
             db_session.commit()
-            response = Response("Flight {} was booked by client with document {} successfully".format(
-                flight.id, client.document), status=201, mimetype='application/json')
+            response = Response("Flight {} was booked by client with document {} with seat {} successfully".format(
+                flight.id, client.document, seat), status=201, mimetype='application/json')
         return response
 
     except Exception as e:

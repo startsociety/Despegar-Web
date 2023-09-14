@@ -33,3 +33,12 @@ def airport_mapper(airport_data):
         "city": airport_data.city,
         "country": airport_data.country
     }
+
+
+def clients_flight(clients_flight_data):
+    return {
+        "id": clients_flight_data.id,
+        "flight_id": clients_flight_data.flight_id,
+        "client_id": clients_flight_data.client_id,
+        "seat": clients_flight_data.seat
+    }

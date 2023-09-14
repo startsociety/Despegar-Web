@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 from datetime import time
 
-from database import Clients, Flights, Airports
+from database import Clients, Flights, Airports, ClientsFlight
 
 engine = create_engine('sqlite:///database.db')
 
@@ -79,6 +79,23 @@ def insertNewAirport(code, name, city, country):
     finally:
         session.close()
 
+
+def insertClientsFlight(flight_id, client_id, seat):
+    new_clients_flight = ClientsFlight(
+        client_id = client_id,
+        flight_id = flight_id,
+        seat = seat
+    )
+
+    try:
+        session.add(new_clients_flight)
+        session.commit()
+        print("Nuevo vuelo de cliente insertado correctamente")
+    except Exception as e:
+        session.rollback()
+        print("Error al insertar el vuelo de cliente:", str(e))
+    finally:
+        session.close()
 
 insertNewAirport(
     code="EZE",
@@ -302,8 +319,8 @@ insertNewFlight(
 )
 
 insertNewFlight(
-    departure_datetime=datetime(2023, 9, 11, 7, 30, 0),
-    arrival_datetime=datetime(2023, 9, 11, 10, 0, 0),
+    departure_datetime=datetime(2023, 11, 11, 7, 30, 0),
+    arrival_datetime=datetime(2023, 11, 11, 10, 0, 0),
     origin=4,
     destination=8,
     flight_time=time(2, 30),
@@ -397,4 +414,29 @@ insertNewClient(
     birthday=datetime(1988, 11, 30),
     sex='Femenino',
     password='secreto987'
+)
+
+
+insertClientsFlight(
+    client_id=1,
+    flight_id=3,
+    seat='A1'
+)
+
+insertClientsFlight(
+    client_id=2,
+    flight_id=3,
+    seat='B2'
+)
+
+insertClientsFlight(
+    client_id=3,
+    flight_id=3,
+    seat='C4'
+)
+
+insertClientsFlight(
+    client_id=4,
+    flight_id=3,
+    seat='F1'
 )
