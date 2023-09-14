@@ -59,7 +59,26 @@ export const NavBar = (props) => {
                 textDecoration: 'none',
                 }}
             >
-                DESPEGAR | Viajes baratos y experiencias unicas
+                DESPEGAR |
+            </Typography>
+            <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="/"
+                sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'system-ui',
+                fontWeight: 700,
+                letterSpacing: '.rem',
+                color: 'white',
+                textDecoration: 'none',
+                }}
+            >
+               Viajes baratos y experiencias unicas
             </Typography>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
