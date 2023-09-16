@@ -265,11 +265,13 @@ def get_flights_back():
     try:
         filters = set()
 
-        if request.args.get("from") and request.args.get("origin"):
-            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+        if request.args.get("origin"):
             origin = int(request.args.get("origin"))
-            filters.add(Flights.arrival_datetime > date_from)
             filters.add(Flights.origin == origin)
+
+        if request.args.get("from"):
+            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+            filters.add(Flights.arrival_datetime > date_from)
 
         flights = Flights.query.filter(*filters).all()
 
