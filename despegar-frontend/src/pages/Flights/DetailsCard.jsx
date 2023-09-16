@@ -20,15 +20,10 @@ export const DetailsCard = (props) => {
 
  const {flight, title} = props
 
- const [origin, setOrigin] =  useState(flight.origin ? flight.origin.city  : "");
- const [destination, setDestination] =  useState(flight.destination ? flight.destination.city  : "");
+ const [origin, setOrigin] =  useState(flight.origin ? flight.origin.code  : "");
+ const [destination, setDestination] =  useState(flight.destination ? flight.destination.code  : "");
  const [date, hour] = flight.arrival_datetime ? flight.arrival_datetime.split(" ") : "";
  const [date_departure, hour_departure] =flight.departure_datetime ? flight.departure_datetime.split(" ") : "";
-
- useEffect(() => {
-   
-  
-}, [flight]);
 
   return (
     <Box sx={{ minWidth: 275, marginTop:1 }}>

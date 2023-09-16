@@ -55,6 +55,26 @@ export const flightPresenter = () => {
         }
     }
 
+    const getFlightsBack = async (origin, from) => {
+        try {
+
+            const res = await axios.get(`${baseUrl}/flights-back`, {
+                params: {
+                    from: from ,
+                    origin: origin,
+                }
+              });
+
+            console.log(res)
+
+            const result = await res.data;
+
+            return result
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     const getSeatingFlight = async () => {
         return getSeatingMock()
     }
@@ -63,5 +83,6 @@ export const flightPresenter = () => {
         getFlights,
         getSeatingFlight,
         getById,
+        getFlightsBack
     }
 }

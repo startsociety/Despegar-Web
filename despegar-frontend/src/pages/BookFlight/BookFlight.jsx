@@ -52,10 +52,7 @@ export const BookFlight = (props) => {
   }
 
   return (
-    <Container sx={{  marginTop: "2%"}}>
-
-      <Box sx={{color:'purple'}}><h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>Reserve sus asientos</h1></Box>
-      
+    <Container sx={{  marginTop: "2%"}}>            
       <Grid container spacing={1}>
         {seating.map((array, rowIndex) => (
           <Box marginTop={rowIndex === 1 || rowIndex === 5 ? 5 : 1} key={rowIndex}>

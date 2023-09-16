@@ -7,19 +7,22 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { AddPassengers } from './AddPassengers';
 import { BookFlight } from './BookFlight';
-import { Container } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import { useNavigate } from 'react-router'
+import { useParams } from 'react-router-dom';
 
 const steps = ['Seleccionar asientos', '¿Quienes viajan?', 'Confirmar'];
 
 export const BookFlightStepper = () => {
   const navigate = useNavigate();
+  const { flightId, flightBackId } = useParams();
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
   const [booking, setBooking] = useState({
     "selectedSeating": [[]],
+    "selectedSeatingBack": [[]],
     "passengers": [],
   });
 
@@ -83,7 +86,23 @@ export const BookFlightStepper = () => {
                 ?
                 <h1>Ultimo paso</h1>
                 :
-                <BookFlight booking={booking} setBooking={setBooking}/>
+                <Stack>
+                  <Box sx={{color:'purple'}}>
+                    <h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
+                      Reserve sus asientos
+                    </h1>
+                  </Box>
+                  <h1>Ida</h1>
+                  <BookFlight booking={booking} setBooking={setBooking} back={false}/>
+                  {
+                    (flightBackId != 'null') ?
+                    <Stack>
+                      <h1>Vuelta</h1>
+                      <BookFlight booking={booking} setBooking={setBooking} back={true}/>
+                    </Stack>  
+                    :null
+                  }
+                </Stack>
               )            
             }
             
