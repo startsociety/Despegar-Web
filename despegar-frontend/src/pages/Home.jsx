@@ -14,8 +14,8 @@ const Home = (props) => {
    const [filter, setFilter] = useState({
         from:null,
         to: null,
-        origin: "",
-        destination: "",
+        origin: null,
+        destination: null,
         price_min: null,
         price_max: null,
         max_flight_time: null
