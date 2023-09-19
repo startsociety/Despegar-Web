@@ -75,7 +75,37 @@ export const flightPresenter = () => {
         }
     }
 
-    const getSeatingFlight = async () => {
+    const getSeatingFlight = async (idFlight) => {
+
+        try {
+
+            const res = await axios.get(`${baseUrl}/flight/${idFlight}/seats`);
+
+            const result = await res.data;
+
+            let response = [];
+            let amountOfElements = 0;
+            let seats = []
+
+            Object.keys(result).forEach(element => {
+                amountOfElements +=1;
+                
+                seats.push({position: element, status: result[element]})
+                
+                if(amountOfElements == 6){
+                    response.push(seats);
+                    seats = [];
+                    amountOfElements = 0;
+                }
+                
+            });
+
+
+            return response
+        } catch (err) {
+            console.error(err)
+        }
+
         return getSeatingMock()
     }
 
