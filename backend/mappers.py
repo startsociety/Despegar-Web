@@ -7,6 +7,7 @@ def client_mapper(client_data):
         "phone": client_data.phone,
         "address": client_data.address,
         "city": client_data.city,
+        "country": client_data.country,
         "birthday": str(client_data.birthday),
         "sex": client_data.sex
     }
@@ -35,10 +36,20 @@ def airport_mapper(airport_data):
     }
 
 
-def clients_flight(clients_flight_data):
+def passenger_flight_mapper(passenger_flight_data):
     return {
-        "id": clients_flight_data.id,
-        "flight_id": clients_flight_data.flight_id,
-        "client_id": clients_flight_data.client_id,
-        "seat": clients_flight_data.seat
+        "id": passenger_flight_data.id,
+        "flight_id": passenger_flight_data.flight_id,
+        "passenger_id": passenger_flight_data.passenger_id,
+        "seat": passenger_flight_data.seat
+    }
+
+
+def passenger_mapper(passenger_data):
+    return {
+        "id": passenger_data.id,
+        "name": passenger_data.name,
+        "document": passenger_data.document,
+        "country": passenger_data.country,
+        "sex": passenger_data.sex
     }

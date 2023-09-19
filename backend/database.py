@@ -16,10 +16,10 @@ class Clients(Base):
     name = Column(String, nullable=False)
     email = Column(String)
     document = Column(Integer, nullable=False)
-    phone = Column(String, nullable=False)
+    phone = Column(String)
     address = Column(String)
     city = Column(String)
-    birthday = Column(Date, nullable=False)
+    birthday = Column(Date)
     sex = Column(String, nullable=False)
     password = Column(String, nullable=False)
 
@@ -37,11 +37,11 @@ class Flights(Base):
     capacity = Column(Integer, nullable=False)
 
 
-class ClientsFlight(Base):
-    __tablename__ = "clients_flights"
+class PassengerFlights(Base):
+    __tablename__ = "passenger_flights"
 
     id = Column(Integer, primary_key=True)
-    client_id = Column(ForeignKey("clients.id"), nullable=False)
+    passenger_id = Column(ForeignKey("passengers.id"), nullable=False)
     flight_id = Column(ForeignKey("flights.id"), nullable=False)
     seat = Column(String, nullable=False)
 
@@ -54,6 +54,16 @@ class Airports(Base):
     name = Column(String, nullable=False)
     city = Column(String, nullable=False)
     country = Column(String, nullable=False)
+
+
+class Passengers(Base):
+    __tablename__ = "passengers"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    document = Column(Integer, nullable=False)
+    country = Column(String)
+    sex = Column(String, nullable=False)
 
 
 Base.metadata.create_all(

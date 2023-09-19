@@ -1,12 +1,12 @@
 from flask import Flask, request, Response
 from flask_cors import CORS
 from sqlalchemy import or_, and_
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import logging
 import jwt
 
-from database import db_session, Clients, Flights, ClientsFlight, Airports
+from database import db_session, Clients, Flights, PassengerFlights, Airports, Passengers
 from config import get_env_vars
 from mappers import *
 
@@ -73,6 +73,7 @@ def signup():
         phone = request.form.get("phone")
         address = request.form.get("address")
         city = request.form.get("city")
+        country = request.form.get("country")
         birthday = datetime.strptime(request.form.get("birthday"), '%d/%m/%Y')
         sex = request.form.get("sex")
 
@@ -86,7 +87,11 @@ def signup():
             client = Clients(name=name, email=email, document=document, phone=phone,
                              address=address, city=city, birthday=birthday, sex=sex, password=password)
 
+            passenger = Passengers(
+                name=name, sex=sex, document=document, country=country)
+
             db_session.add(client)
+            db_session.add(passenger)
             db_session.commit()
 
             client_registered = Clients.query.filter_by(
@@ -241,8 +246,8 @@ def get_flights():
             filters.add(Flights.price.between(float(0), price_max))
 
         if request.args.get("max_flight_time"):
-            max_flight_time = datetime.time(
-                request.args.get("max_flight_time"))
+            minutes = int(request.args.get("max_flight_time"))
+            max_flight_time = timedelta(minutes=minutes)
             filters.add(Flights.flight_time <= max_flight_time)
 
         flights = Flights.query.filter(*filters).all()
@@ -300,13 +305,14 @@ def get_flight_seats(flight_id):
 
         response = None
 
-        seats_booked_query = ClientsFlight.query.filter(
+        seats_booked_query = PassengerFlights.query.filter(
             flight_id == flight_id).all()
 
         seats_booked_data = []
 
         for seat_booked_query in seats_booked_query:
-            seats_booked_data.append(clients_flight(seat_booked_query))
+            seats_booked_data.append(
+                passenger_flight_mapper(seat_booked_query))
 
         for seat_booked_data in seats_booked_data:
             all_seats[seat_booked_data["seat"]] = 2
@@ -318,7 +324,7 @@ def get_flight_seats(flight_id):
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
 
-
+"""
 @app.route("/book-flight", methods=["POST"])
 def book_flight():
     try:
@@ -334,32 +340,102 @@ def book_flight():
         response = None
 
         seats = list(all_seats.keys())
-        #TO-DO: verificar que el asiento al momento de reservar no esté ocupado, reutilizar /flight/<flight_id>/seats
+        # TO-DO: verificar que el asiento al momento de reservar no esté ocupado, reutilizar /flight/<flight_id>/seats
         if request.form.get("seat"):
             seat = request.form.get("seat").upper()
             if seat not in seats:
                 raise ValueError('Seat is not correct')
 
-        client_id = request.form.get("client_id")
+        passenger_id = request.form.get("passenger_id")
         flight_id = request.form.get("flight_id")
 
-        client = Clients.query.filter_by(id=client_id).first()
+        passenger = Passengers.query.filter_by(id=passenger_id).first()
         flight = Flights.query.filter_by(id=flight_id).first()
 
-        if client is None:
-            response = Response("Client with id {} does not exist".format(
-                client_id), status=404, mimetype='application/json')
+        if passenger is None:
+            response = Response("Passenger with id {} does not exist".format(
+                passenger_id), status=404, mimetype='application/json')
         elif flight is None:
             response = Response("Flight with id {} does not exist".format(
-                client_id), status=404, mimetype='application/json')
+                flight_id), status=404, mimetype='application/json')
         else:
-            clients_flight = ClientsFlight(
-                client_id=client_id, flight_id=flight_id, seat=seat)
+            passenger_flight = PassengerFlights(
+                passenger_id=passenger_id, flight_id=flight_id, seat=seat)
 
-            db_session.add(clients_flight)
+            db_session.add(passenger_flight)
             db_session.commit()
-            response = Response("Flight {} was booked by client with document {} with seat {} successfully".format(
-                flight.id, client.document, seat), status=201, mimetype='application/json')
+            response = Response("Flight {} was booked by passenger with document {} with seat {} successfully".format(
+                flight.id, passenger.document, seat), status=201, mimetype='application/json')
+        return response
+
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+"""
+
+@app.route("/book-flight", methods=["POST"])
+def book_flight():
+    try:
+        response = None
+
+        all_seats = {'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'A5': 1, 'A6': 1,
+                     'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'B5': 1, 'B6': 1,
+                     'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'C5': 1, 'C6': 1,
+                     'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1, 'D5': 1, 'D6': 1,
+                     'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'E5': 1, 'E6': 1,
+                     'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'F5': 1, 'F6': 1}
+
+        seats = list(all_seats.keys())
+
+        response = None
+
+        flight_id = request.json['flight_id']
+        passengers = request.json['passengers']
+        flight = Flights.query.filter_by(id=flight_id).first()
+
+        if flight is None:
+            raise ValueError(
+                "Flight with id {} does not exist".format(flight_id))
+
+        for passenger in passengers:
+
+            seat = passenger["seat"].upper()
+            if seat not in seats:
+                raise ValueError('Seat is not correct')
+
+            passenger_data = Passengers.query.filter_by(
+                document=passenger['document']).first()
+            if passenger_data is None:
+
+                name = passenger["name"]
+                document = passenger["document"]
+                country = passenger["country"]
+                sex = passenger["sex"]
+
+                passenger = Passengers(
+                    name=name, document=document, country=country, sex=sex)
+
+                db_session.add(passenger)
+                db_session.commit()
+
+                passenger_saved = Passengers.query.filter_by(
+                    document=document).first()
+
+                passenger_flight = PassengerFlights(
+                    passenger_id=passenger_saved.id, flight_id=flight_id, seat=seat)
+
+                db_session.add(passenger_flight)
+                db_session.commit()
+
+            else:
+                passenger_flight = PassengerFlights(
+                    passenger_id=passenger_data.id, flight_id=flight_id, seat=seat)
+
+                db_session.add(passenger_flight)
+                db_session.commit()
+
+        response = Response("Flight {} was booked by {} passengers successfully".format(
+            flight.id, len(passengers)), status=201, mimetype='application/json')
+
         return response
 
     except Exception as e:
@@ -391,6 +467,116 @@ def get_airport(id):
             response = Response(json.dumps(airport_mapper(
                 airport_data)), status=200, mimetype='application/json')
         return response
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/passengers", methods=["POST"])
+def new_passenger():
+    try:
+        response = None
+
+        name = request.form.get("name")
+        document = int(request.form.get("document"))
+        country = request.form.get("country")
+        sex = request.form.get("sex")
+
+        existing_passenger = Passengers.query.filter(
+            Passengers.document == document).first()
+
+        if (existing_passenger):
+            response = Response('Passenger with document {} already exists'.format(
+                document), status=409, mimetype='application/json')
+        else:
+            passenger = Passengers(
+                name=name, document=document, country=country, sex=sex)
+
+            db_session.add(passenger)
+            db_session.commit()
+
+            passenger_registered = Passengers.query.filter_by(
+                document=document).first()
+
+            response = Response('Client with document {} created successfully'.format(
+                passenger_registered.document), status=201, mimetype='application/json')
+
+        return response
+
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/passenger/<id>", methods=["GET"])
+def get_passenger(id):
+    try:
+        response = None
+        passenger_data = Passengers.query.get(id)
+        if passenger_data is None:
+            response = Response('Passenger with id {} does not exist'.format(
+                id), status=404, mimetype='application/json')
+        else:
+            response = Response(json.dumps(passenger_mapper(
+                passenger_data)), status=200, mimetype='application/json')
+        return response
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/passenger/<id>", methods=["PUT"])
+def update_passenger(id):
+    try:
+        response = None
+        name = request.form.get("name")
+        document = int(request.form.get("document"))
+        country = request.form.get("country")
+        sex = request.form.get("sex")
+
+        passenger_data = Passengers.query.get(id)
+        if passenger_data is None:
+            response = Response('Passenger with id {} does not exist'.format(
+                id), status=200, mimetype='application/json')
+        else:
+            Passengers.query.filter_by(id=id).update(dict(
+                name=name, document=document, country=country, sex=sex))
+            db_session.commit()
+            response = Response('Passenger with id {} updated successfully'.format(
+                id), status=200, mimetype='application/json')
+
+        return response
+
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/passenger/<id>", methods=["DELETE"])
+def delete_passenger(id):
+    try:
+        response = None
+        passenger_data = Passengers.query.get(id)
+        if passenger_data is None:
+            response = Response('Passenger with id {} does not exist'.format(
+                id), status=200, mimetype='application/json')
+        else:
+            db_session.delete(passenger_data)
+            db_session.commit()
+            response = Response('Passenger with id {} deleted successfully'.format(
+                id), status=200, mimetype='application/json')
+
+        return response
+
+    except Exception as e:
+        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
+
+@app.route("/passengers", methods=["GET"])
+def get_passengers():
+    try:
+        passengers = Passengers.query.all()
+        response = []
+        for passenger in passengers:
+            response.append(passenger_mapper(passenger))
+        return Response(json.dumps(response), status=200, mimetype='application/json')
+
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
 
