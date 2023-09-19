@@ -55,11 +55,11 @@ export const BookFlight = (props) => {
     <Container sx={{  marginTop: "2%"}}>            
       <Grid container spacing={1}>
         {seating.map((array, rowIndex) => (
-          <Box marginTop={rowIndex === 1 || rowIndex === 5 ? 5 : 1} key={rowIndex}>
-            <Grid container item spacing={1}>
+          <Box marginTop={1} key={rowIndex}>
+            <Grid container item spacing={2}>
               {array.map((ubication, columnIndex) => (
                 <Grid item key={columnIndex}>
-                  <Box marginRight={columnIndex === 7 ? 5 : 0}>
+                  <Box marginLeft={columnIndex === 3 ? 25 : 0}>
                     <Chip
                       label={ubication.position}
                       disabled= {ubication.status == 2} 
