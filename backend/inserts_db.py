@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 from datetime import time
 
-from database import Clients, Flights, Airports, ClientsFlight
+from database import Clients, Flights, Airports, PassengerFlights, Passengers
 
 engine = create_engine('sqlite:///database.db')
 
@@ -80,20 +80,39 @@ def insertNewAirport(code, name, city, country):
         session.close()
 
 
-def insertClientsFlight(flight_id, client_id, seat):
-    new_clients_flight = ClientsFlight(
-        client_id = client_id,
+def insertPassengerFlights(flight_id, passenger_id, seat):
+    new_passenger_flights = PassengerFlights(
+        passenger_id = passenger_id,
         flight_id = flight_id,
         seat = seat
     )
 
     try:
-        session.add(new_clients_flight)
+        session.add(new_passenger_flights)
         session.commit()
         print("Nuevo vuelo de cliente insertado correctamente")
     except Exception as e:
         session.rollback()
         print("Error al insertar el vuelo de cliente:", str(e))
+    finally:
+        session.close()
+
+def insertNewPassenger(name, document, country, sex):
+
+    new_passenger = Passengers(
+        name=name,
+        document=document,
+        sex=sex,
+        country=country
+    )
+
+    try:
+        session.add(new_passenger)
+        session.commit()
+        print("Nuevo pasajero insertado correctamente")
+    except Exception as e:
+        session.rollback()
+        print("Error al insertar el pasajero:", str(e))
     finally:
         session.close()
 
@@ -417,26 +436,54 @@ insertNewClient(
 )
 
 
-insertClientsFlight(
-    client_id=1,
+insertNewPassenger(
+    name='Juan Pérez',
+    document='12345678',
+    country='Argentina',
+    sex='Masculino'
+)
+
+insertNewPassenger(
+    name='María Rodríguez',
+    document='98765432',
+    sex='Femenino',
+    country='Argentina'
+)
+
+insertNewPassenger(
+    name='Carlos Gómez',
+    document='34567890',
+    sex='Masculino',
+    country='Argentina'
+)
+
+insertNewPassenger(
+    name='Laura Martínez',
+    document='56789012',
+    country='Argentina',
+    sex='Femenino'
+)
+
+insertPassengerFlights(
+    passenger_id=1,
     flight_id=3,
     seat='A1'
 )
 
-insertClientsFlight(
-    client_id=2,
+insertPassengerFlights(
+    passenger_id=2,
     flight_id=3,
     seat='B2'
 )
 
-insertClientsFlight(
-    client_id=3,
+insertPassengerFlights(
+    passenger_id=3,
     flight_id=3,
     seat='C4'
 )
 
-insertClientsFlight(
-    client_id=4,
+insertPassengerFlights(
+    passenger_id=4,
     flight_id=3,
     seat='F1'
 )

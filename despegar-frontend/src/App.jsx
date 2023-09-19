@@ -25,7 +25,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/flights" element={<Flights />} />
-            <Route path="/book-flight" element={<BookFlightStepper />} />
+            <Route path="/book-flight/:flightId/:flightBackId?" element={<BookFlightStepper />} />
         </Routes>
       </BrowserRouter>
       </>
