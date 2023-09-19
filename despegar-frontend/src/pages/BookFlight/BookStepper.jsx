@@ -26,6 +26,9 @@ export const BookFlightStepper = () => {
     "passengers": [],
   });
 
+  const [selectedSeating, setSelectedSeating] = useState([]);
+  const [selectedSeatingBack, setSelectedSeatingBack] = useState([]);
+
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
@@ -84,25 +87,38 @@ export const BookFlightStepper = () => {
               (
                 (activeStep == 2)
                 ?
-                <h1>Ultimo paso</h1>
+                  <h1>Ultimo paso</h1>
                 :
-                <Stack>
-                  <Box sx={{color:'purple'}}>
-                    <h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
-                      Reserve sus asientos
-                    </h1>
-                  </Box>
-                  <h1>Ida</h1>
-                  <BookFlight booking={booking} setBooking={setBooking} back={false}/>
-                  {
-                    (flightBackId != 'null') ?
-                    <Stack>
-                      <h1>Vuelta</h1>
-                      <BookFlight booking={booking} setBooking={setBooking} back={true}/>
-                    </Stack>  
-                    :null
-                  }
-                </Stack>
+                  <Stack>
+                    <Box sx={{color:'purple'}}>
+                      <h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
+                        Reserve sus asientos
+                      </h1>
+                    </Box>
+                    {
+                      (flightId != 'null') ?
+                        <Stack>
+                          <h1>Ida</h1>
+                          <BookFlight booking={booking} setBooking={setBooking}
+                           selectedSeating={selectedSeating}
+                           setSelectedSeating={setSelectedSeating}
+                           />
+                        </Stack>
+                      :
+                        null 
+                    }
+                    {
+                      (flightBackId != 'null') ?
+                        <Stack>
+                          <h1>Vuelta</h1>
+                          <BookFlight booking={booking} setBooking={setBooking} type='back'
+                           selectedSeating={selectedSeatingBack}
+                           setSelectedSeating={setSelectedSeatingBack} />
+                        </Stack>
+                      :
+                        null 
+                    }
+                  </Stack>
               )            
             }
             

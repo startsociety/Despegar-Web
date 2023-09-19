@@ -12,9 +12,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { CardActions } from '@mui/material';
 
 export const AddPassengers = (props) => {
     const {booking, setBooking } = props
@@ -33,23 +32,30 @@ export const AddPassengers = (props) => {
         noValidate
         autoComplete="off"
          >
+          <h5>Asientos selectionados ida:</h5>
+            {booking.selectedSeating.map((position, columnIndex) => (
+            <body2>{position} </body2>
+            
+          ))}
+          <h5>Asientos selectionados vuelta:</h5>
+            {booking.selectedSeatingBack.map((position, columnIndex) => (
+            <body2>{position} </body2>
+            
+          ))}
         <Grid container rowSpacing={1} >
         {
           booking.selectedSeating.map((passenger, columnIndex) => (
           (columnIndex > 0)?
           
-             <Card elevation={15} sx={{  minWidth: 245, margin: 2, backgroundColor: '#270570'}}>
-                
-                    <h4 style={{fontFamily: 'sans-serif', color:'white'}}> Asiento {passenger}</h4>
+             <Card elevation={15} sx={{  minWidth: 245, margin: 2, backgroundColor: '#270570'}}>                
+                  <h4 style={{fontFamily: 'sans-serif', color:'white'}}> Asiento {passenger}</h4>
                   <CardContent>
                     <div>
                       <TextField sx={{ m: 1, minWidth: 500, backgroundColor: 'white' }}
                         name
                         id="outlined-required"
                         label="Nombre/s"
-                        defaultValue=""
-
-                        
+                        defaultValue=""                        
                       />
                     </div>
                     <div>
@@ -98,9 +104,7 @@ export const AddPassengers = (props) => {
                                   <RadioGroup
                                       aria-labelledby="demo-radio-buttons-group-label"
                                       defaultValue="female"
-                                      name="radio-buttons-group"
-                                      
-                                      
+                                      name="radio-buttons-group"                                                                            
                                       >
                                       <FormControlLabel value="female" style={{fontFamily: 'Lato', color:'white'}} control={<Radio />} label="Femenino" />
                                       <FormControlLabel value="male" style={{fontFamily: 'Lato', color:'white'}} control={<Radio />} label="Masculino" />
@@ -117,12 +121,7 @@ export const AddPassengers = (props) => {
           : null
           ))
         }
-         </Grid>
-            <h5>Asientos selectionados:</h5>
-            {booking.selectedSeating.map((position, columnIndex) => (
-            <body2>{position} </body2>
-          ))}
-        
+         </Grid>        
       </Box>
     );
 

@@ -8,7 +8,7 @@ export const BookFlight = (props) => {
   
   const { getSeatingFlight } = flightPresenter();
 
-  const {booking, setBooking } = props
+  const {booking, setBooking, selectedSeating, setSelectedSeating, type } = props
   const [seating, setSeating] = useState([[]]);
 
   useEffect(() => {
@@ -23,27 +23,34 @@ export const BookFlight = (props) => {
     const newSeating = [...seating];
     const position = newSeating[rowIndex][columnIndex].position
     const newBooking = booking
+
     if(newSeating[rowIndex][columnIndex].status != 3){
       newSeating[rowIndex][columnIndex].status = 3;
 
-      newBooking.selectedSeating.push(position)
+      selectedSeating.push(position)
     }else{
-      const newSelectedSeating  = newBooking.selectedSeating.filter((post) => post !== position);
-      newBooking["selectedSeating"] = newSelectedSeating
+      const newSelectedSeating  = selectedSeating.filter((post) => post !== position);
+
+      setSelectedSeating(newSelectedSeating)
+      newSeating[rowIndex][columnIndex].status = 1;
+     
+      if(type == 'back'){
+        newBooking["selectedSeatingBack"] = newSelectedSeating
+      }else{
+        newBooking["selectedSeating"] = newSelectedSeating
+      }
 
       setBooking(newBooking)
-
-      newSeating[rowIndex][columnIndex].status = 1;
     }
-    
     setSeating(newSeating);
+    console.log("booking =>", booking )
   }
 
   function getColor(ubication) {
     if (ubication.status === 3) {
       return "#3cbabf";
-    }
-    else if(booking.selectedSeating.includes(ubication.position)){
+
+    }else if(selectedSeating.includes(ubication.position)){
       ubication.status = 3
       return "#3cbabf";
     }
@@ -82,11 +89,9 @@ export const BookFlight = (props) => {
       </Grid>
 
       <h5>Asientos selectionados:</h5>
-      {booking.selectedSeating.map((position, columnIndex) => (
+      {selectedSeating.map((position, columnIndex) => (
           <body2>{position} </body2>
-        ))} 
-    </Container>
-    
+        ))}
+    </Container>    
   );
-
 };
