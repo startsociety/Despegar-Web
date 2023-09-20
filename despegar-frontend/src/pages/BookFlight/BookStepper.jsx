@@ -116,7 +116,7 @@ export const BookFlightStepper = () => {
                     </Box>
                     {
                       (flightId != 'null') ?
-                          <BookFlight title="Ida" booking={booking} setBooking={setBooking}
+                          <BookFlight title="Ida" booking={booking} setBooking={setBooking} idFlight={flightId}
                            selectedSeating={selectedSeating}
                            setSelectedSeating={setSelectedSeating}
                            />
@@ -126,7 +126,7 @@ export const BookFlightStepper = () => {
                     {
                       (flightBackId != 'null') ?
 
-                          <BookFlight title="Vuelta" booking={booking} setBooking={setBooking} type='back'
+                          <BookFlight title="Vuelta" booking={booking} setBooking={setBooking} type='back' idFlight={flightBackId}
                            selectedSeating={selectedSeatingBack}
                            setSelectedSeating={setSelectedSeatingBack} />
                       :
