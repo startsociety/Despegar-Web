@@ -210,17 +210,17 @@ def get_flights():
         filters = set()
 
         if request.args.get("from") and request.args.get("to"):
-            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
-            date_to = datetime.strptime(request.args.get("to"), '%d/%m/%Y')
+            date_from = datetime.strptime(request.args.get("from"), '%Y-%m-%d')
+            date_to = datetime.strptime(request.args.get("to"), '%Y-%m-%d')
             filters.add(Flights.departure_datetime.between(date_from, date_to))
 
         elif request.args.get("from"):
-            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+            date_from = datetime.strptime(request.args.get("from"), '%Y-%m-%d')
             date_to = datetime.strptime("12/12/2999", '%d/%m/%Y')
             filters.add(Flights.departure_datetime.between(date_from, date_to))
 
         elif request.args.get("to"):
-            date_to = datetime.strptime(request.args.get("to"), '%d/%m/%Y')
+            date_to = datetime.strptime(request.args.get("to"), '%Y-%m-%d')
             now = datetime.now()
             filters.add(Flights.departure_datetime.between(now, date_to))
 
@@ -275,7 +275,7 @@ def get_flights_back():
             filters.add(Flights.origin == origin)
 
         if request.args.get("from"):
-            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+            date_from = datetime.strptime(request.args.get("from"), '%Y-%m-%d')
             filters.add(Flights.arrival_datetime > date_from)
 
         flights = Flights.query.filter(*filters).all()
