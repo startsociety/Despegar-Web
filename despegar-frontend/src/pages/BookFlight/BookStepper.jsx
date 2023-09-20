@@ -35,6 +35,19 @@ export const BookFlightStepper = () => {
   
   const handleNext = () => {
     let newSkipped = skipped;
+
+    if(booking.selectedSeating.length == 0){
+      alert("Se debe seleccionar 1 asiento como minimo en Ida")
+      return; 
+    }
+    if(booking.selectedSeatingBack.length == 0){
+      alert("Se debe seleccionar 1 asiento como minimo en Vuelta")
+      return; 
+    }
+    if(booking.selectedSeating.length != booking.selectedSeatingBack.length){
+      alert("Se deben marcar la misma cantidad de asientos en la ida y vuelta")
+      return; 
+    }
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
@@ -42,6 +55,8 @@ export const BookFlightStepper = () => {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+
+    console.log("🚀 ~ file: BookStepper.jsx:40 ~ handleNext ~ booking:", booking)
   };
 
   const handleBack = () => {
@@ -97,24 +112,19 @@ export const BookFlightStepper = () => {
                     </Box>
                     {
                       (flightId != 'null') ?
-                        <Stack>
-                          <h1>Ida</h1>
-                          <BookFlight booking={booking} setBooking={setBooking}
+                          <BookFlight title="Ida" booking={booking} setBooking={setBooking}
                            selectedSeating={selectedSeating}
                            setSelectedSeating={setSelectedSeating}
                            />
-                        </Stack>
                       :
                         null 
                     }
                     {
                       (flightBackId != 'null') ?
-                        <Stack>
-                          <h1>Vuelta</h1>
-                          <BookFlight booking={booking} setBooking={setBooking} type='back'
+
+                          <BookFlight title="Vuelta" booking={booking} setBooking={setBooking} type='back'
                            selectedSeating={selectedSeatingBack}
                            setSelectedSeating={setSelectedSeatingBack} />
-                        </Stack>
                       :
                         null 
                     }
