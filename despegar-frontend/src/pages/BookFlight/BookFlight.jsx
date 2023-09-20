@@ -8,11 +8,11 @@ export const BookFlight = (props) => {
   
   const { getSeatingFlight } = flightPresenter();
 
-  const {title, booking, setBooking, selectedSeating, setSelectedSeating, type } = props
+  const {title, booking, setBooking, selectedSeating, setSelectedSeating, type, idFlight } = props
   const [seating, setSeating] = useState([[]]);
 
   useEffect(() => {
-    getSeatingFlight()
+    getSeatingFlight(idFlight)
       .then((res) => {
         setSeating(res);
       })
