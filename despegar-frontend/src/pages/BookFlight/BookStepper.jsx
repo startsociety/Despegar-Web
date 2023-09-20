@@ -18,7 +18,6 @@ export const BookFlightStepper = () => {
   const { flightId, flightBackId } = useParams();
 
   const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
 
   const [booking, setBooking] = useState({
     "selectedSeating": [[]],
@@ -29,12 +28,13 @@ export const BookFlightStepper = () => {
   const [selectedSeating, setSelectedSeating] = useState([]);
   const [selectedSeatingBack, setSelectedSeatingBack] = useState([]);
 
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
+  const passengerEmpty = {
+    dni: null,
+    firstname: null,
+    lastname: null
+  }
   
   const handleNext = () => {
-    let newSkipped = skipped;
 
     if(booking.selectedSeating.length == 0){
       alert("Se debe seleccionar 1 asiento como minimo en Ida")
@@ -48,15 +48,20 @@ export const BookFlightStepper = () => {
       alert("Se deben marcar la misma cantidad de asientos en la ida y vuelta")
       return; 
     }
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    
+    if(activeStep == 0){
+      let tempPassengers = []
+      const tempBooking = booking
+      
+      selectedSeating.forEach(element => {
+        tempPassengers.push(passengerEmpty)
+      });
 
-    console.log("🚀 ~ file: BookStepper.jsx:40 ~ handleNext ~ booking:", booking)
+      tempBooking.passengers = tempPassengers
+      setBooking(tempBooking)
+    }
   };
 
   const handleBack = () => {
@@ -72,9 +77,6 @@ export const BookFlightStepper = () => {
           {steps.map((label, index) => {
             const stepProps = {};
             const labelProps = {};
-            if (isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
             return (
               <Step key={label} {...stepProps}>
                 <StepLabel {...labelProps}>{label}</StepLabel>
@@ -89,7 +91,9 @@ export const BookFlightStepper = () => {
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={toHome}>Volver a inicio</Button>
+              <Button onClick={toHome}>
+                Volver a inicio
+              </Button>
             </Box>
           </React.Fragment>
         ) : (

@@ -40,8 +40,8 @@ export const AddPassengers = (props) => {
         ))}
       <Grid container rowSpacing={1} >
       {
-        booking.selectedSeating.map((seating, columnIndex) => (
-            <PassengerCard seating={seating} booking={booking} passenger={newPassenger}></PassengerCard>           
+        booking.passengers.map((seating, columnIndex) => (
+            <PassengerCard booking={booking} passenger={newPassenger} />
         ))
       }
         </Grid>        

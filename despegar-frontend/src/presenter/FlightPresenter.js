@@ -55,17 +55,16 @@ export const flightPresenter = () => {
         }
     }
 
-    const getFlightsBack = async (origin, from) => {
+    const getFlightsBack = async (origin, destination) => {
         try {
 
             const res = await axios.get(`${baseUrl}/flights-back`, {
                 params: {
-                    from: from ,
                     origin: origin,
+                    destination: destination ,
                 }
               });
 
-            console.log(res)
 
             const result = await res.data;
 

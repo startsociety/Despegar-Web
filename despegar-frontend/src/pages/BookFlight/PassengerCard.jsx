@@ -14,7 +14,7 @@ import { CardActions } from '@mui/material';
 
 export const PassengerCard = (props) => {
 
-        const {seating, setSeating, passenger, setPassenger} = props 
+        const {passenger, setPassenger} = props 
         const [country, setCountry] = React.useState('')
   
         const handleChangeCountry = (event) => {
@@ -36,7 +36,6 @@ export const PassengerCard = (props) => {
         return(
             <Card elevation={15} sx={{  minWidth: 245, margin: 2, backgroundColor: '#270570'}}>                
                 <CardContent>
-                <h4 style={{fontFamily: 'sans-serif', color:'white'}}> Asiento {seating}</h4>
                 <div>
                     <TextField sx={{ m: 1, minWidth: 500, backgroundColor: 'white' }}
                     id="outlined-required"
