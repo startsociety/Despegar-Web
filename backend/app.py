@@ -270,9 +270,10 @@ def get_flights_back():
     try:
         filters = set()
 
-        if request.args.get("origin"):
+        if request.args.get("origin") and request.args.get("destination"):
             origin = int(request.args.get("origin"))
-            filters.add(Flights.origin == origin)
+            destination = int(request.args.get("destination"))
+            filters.add(and_(Flights.origin == origin, Flights.destination == destination))
 
         if request.args.get("from"):
             date_from = datetime.strptime(request.args.get("from"), '%Y-%m-%d')

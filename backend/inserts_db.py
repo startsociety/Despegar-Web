@@ -268,6 +268,16 @@ insertNewFlight(
 )
 
 insertNewFlight(
+    departure_datetime=datetime(2023, 10, 22, 11, 30, 0),
+    arrival_datetime=datetime(2023, 10, 22, 14, 0, 0),
+    origin=3,
+    destination=1,
+    flight_time=time(2, 30),
+    price=220,
+    capacity=200
+)
+
+insertNewFlight(
     departure_datetime=datetime(2023, 10, 25, 9, 0, 0),
     arrival_datetime=datetime(2023, 10, 25, 11, 30, 0),
     origin=2,
@@ -282,6 +292,16 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 11, 1, 15, 30, 0),
     origin=3,
     destination=1,
+    flight_time=time(2, 30),
+    price=190,
+    capacity=250
+)
+
+insertNewFlight(
+    departure_datetime=datetime(2023, 11, 15, 13, 0, 0),
+    arrival_datetime=datetime(2023, 11, 15, 15, 30, 0),
+    origin=1,
+    destination=3,
     flight_time=time(2, 30),
     price=190,
     capacity=250
@@ -312,6 +332,16 @@ insertNewFlight(
     arrival_datetime=datetime(2023, 9, 15, 12, 0, 0),
     origin=16,
     destination=7,
+    flight_time=time(2, 30),
+    price=200,
+    capacity=200
+)
+
+insertNewFlight(
+    departure_datetime=datetime(2023, 9, 22, 9, 30, 0),
+    arrival_datetime=datetime(2023, 9, 22, 12, 0, 0),
+    origin=7,
+    destination=16,
     flight_time=time(2, 30),
     price=200,
     capacity=200
