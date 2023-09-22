@@ -10,16 +10,21 @@ import { BookFlight } from './BookFlight';
 import { Container, Stack } from '@mui/material';
 import { useNavigate } from 'react-router'
 import { useParams } from 'react-router-dom';
+import { flightPresenter } from '../../presenter/FlightPresenter'
+import { FlightConfirm } from './FlightConfirm';
 
 const steps = ['Seleccionar asientos', '¿Quienes viajan?', 'Confirmar'];
 
 export const BookFlightStepper = () => {
   const navigate = useNavigate();
+  const { getById, bookingFlight } = flightPresenter()
   const { flightId, flightBackId } = useParams();
 
   const [activeStep, setActiveStep] = React.useState(0);
 
   const [booking, setBooking] = useState({
+    "flight": null,
+    "flightBack": null,
     "selectedSeating": [[]],
     "selectedSeatingBack": [[]],
     "passengers": [],
@@ -36,7 +41,32 @@ export const BookFlightStepper = () => {
     "seat":  null,
     "seatBack": null
   }
-  
+
+
+  useEffect(() => {
+
+    getById(flightId)
+    .then((res) => {
+      let updatedBooking = { ...booking };
+
+      updatedBooking["flight"] = res;
+
+      if(flightBackId != "null"){
+        getById(flightBackId)
+        .then((res) => {
+    
+          updatedBooking["flightBack"] = res;
+          setBooking(updatedBooking);
+        
+        })
+        .catch((err) => console.log(err));
+      }
+      setBooking(updatedBooking);
+    })
+    .catch((err) => console.log(err));
+
+  }, []);
+
   const handleNext = () => {
 
     if(booking.selectedSeating.length == 0){
@@ -66,7 +96,17 @@ export const BookFlightStepper = () => {
       setBooking(tempBooking)
     }
 
-    console.log("🚀 ~ file: booking:", booking)
+    if(activeStep === steps.length - 1){
+      BookingFlightConfirm()
+    }
+  };
+
+  const BookingFlightConfirm = () => {
+    bookingFlight(booking)
+    .then((res) => {
+      console.log("🚀 ~ file: BookStepper.jsx:109 ~ .then ~ res:", res)
+    })
+    .catch((err) => console.log(err));
   };
 
   const handleBack = () => {
@@ -111,7 +151,9 @@ export const BookFlightStepper = () => {
               (
                 (activeStep == 2)
                 ?
-                  <h1>Ultimo paso</h1>
+                <Box sx={{marginTop:"30px", alignContent:"center", justifyItems:"center"}}>
+                  <FlightConfirm booking={booking} />
+                </ Box>                  
                 :
                   <Stack>
                     <Box sx={{color:'purple'}}>

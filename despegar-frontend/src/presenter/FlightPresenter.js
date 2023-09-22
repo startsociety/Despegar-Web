@@ -108,10 +108,56 @@ export const flightPresenter = () => {
         return getSeatingMock()
     }
 
+    const bookingFlight = async (booking) => {
+        try {
+            const body = {
+                flight_id:  [],
+                passengers: []
+            }            
+
+            if(booking.flight!=null){
+                body.flight_id.push(booking.flight.id)
+            }else{
+                alert("No es posible realizar la reserva, volver a intetar")
+                return;
+            }
+            if(booking.flightBack != null){
+                body.flight_id.push(booking.flightBack.id)
+            }
+
+            booking.passengers.map(passenger => {
+                const passTemp = {
+                    "name": passenger.name,
+                    "country": passenger.country,
+                    "document": passenger.document,
+                    "sex": passenger.sex,
+                    "seat": []
+                }
+                
+                passTemp.seat.push(passenger.seat)
+                passTemp.seat.push(passenger.seatBack)   
+                
+                body.passengers.push(passTemp)
+            });        
+
+            const headers = 
+            {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            };
+
+            const res = await axios.post(`${baseUrl}/book-flight`, body, { headers });
+            return res.data;
+        } catch (err) {
+            console.log('err => ' , err)
+        }
+    }
+
+
     return {
         getFlights,
         getSeatingFlight,
         getById,
-        getFlightsBack
+        getFlightsBack,
+        bookingFlight
     }
 }
