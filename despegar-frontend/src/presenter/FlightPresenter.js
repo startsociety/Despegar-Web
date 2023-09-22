@@ -24,7 +24,7 @@ export const flightPresenter = () => {
                     origin: filter.origin != null ? filter.origin.id : null,
                     destination: filter.destination != null ? filter.destination.id : null,
                     price_min: filter.price_min != null ? filter.price_min : null,
-                    price_max: filter.price_max,
+                    price_max: filter.price_max != 0 && filter.price_max != null ? filter.price_max : null,
                     max_flight_time:filter.max_flight_time
                 }
               });
@@ -65,7 +65,7 @@ export const flightPresenter = () => {
                 }
               });
 
-
+            console.log("getFlightsBack => ", res)
             const result = await res.data;
 
             return result

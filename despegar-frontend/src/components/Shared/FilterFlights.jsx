@@ -65,8 +65,7 @@ export const Filterflights = (props) => {
         console.log(filter)
         
         getFlights(filter)
-        .then((res) => {
-          console.log("res filter=> ", res)
+        .then((res) => {          
           setFlights(res)
         })
         .catch((err) => console.log(err));
@@ -185,17 +184,6 @@ export const Filterflights = (props) => {
                                 name="price_max"
                                 onChange={handleChange}
                                 value={filter.price_max}
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <TextField
-                                type="number"
-                                label="Tiempo Max de vuelo"
-                                variant="outlined"
-                                name="max_flight_time"
-                                onChange={handleChange}
-                                value={filter.max_flight_time}
                                 size="small"
                             />
                         </Grid>

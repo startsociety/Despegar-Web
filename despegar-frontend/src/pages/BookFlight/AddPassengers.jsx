@@ -4,48 +4,39 @@ import Grid from '@mui/material/Grid';
 import { PassengerCard } from "./PassengerCard";
 
 export const AddPassengers = (props) => {
-    const {booking, setBooking } = props
-    const [country, setCountry] = React.useState('');
-  
-    const handleChange = (event) => {
-      setCountry(event.target.value);
-    }
+  const { booking, setBooking } = props;
 
-    const newPassenger = () => {
-      return booking.passengers.push({
-        "dni":"",
-        "firstname": "",
-        "lastname": ""
-      })       
-    }
+  const setPassenger = (value, index) => {
+      const updatedBooking = { ...booking };
+
+      updatedBooking.passengers[index] = value;
+      setBooking(updatedBooking);
+  }
 
     return(
       <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
       }}
       noValidate
       autoComplete="off"
-        >
-        <h5>Asientos selectionados ida:</h5>
-          {booking.selectedSeating.map((position) => (
-          <body2>{position} </body2>
-          
-        ))}
-        <h5>Asientos selectionados vuelta:</h5>
-          {booking.selectedSeatingBack.map((position) => (
-          <body2>{position} </body2>
-          
-        ))}
-      <Grid container rowSpacing={1} >
-      {
-        booking.passengers.map((seating, columnIndex) => (
-            <PassengerCard booking={booking} passenger={newPassenger} />
-        ))
-      }
-        </Grid>        
-    </Box>
+  >
+      <h2>Completar información de pasajeros:</h2>
+      <Grid container rowSpacing={1}>
+          {
+              booking.passengers.map((passenger, index) => (
+                  <PassengerCard
+                      key={index}
+                      booking={booking}
+                      passenger={passenger}
+                      setPassenger={(event) => setPassenger(event, index)}
+                      indexPassenger={index}
+                  />
+              ))
+          }
+      </Grid>
+  </Box>
   );
 
 }

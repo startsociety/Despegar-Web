@@ -29,9 +29,12 @@ export const BookFlightStepper = () => {
   const [selectedSeatingBack, setSelectedSeatingBack] = useState([]);
 
   const passengerEmpty = {
-    dni: null,
-    firstname: null,
-    lastname: null
+    "name": null,
+    "country": null,
+    "document": null,
+    "sex": null,
+    "seat":  null,
+    "seatBack": null
   }
   
   const handleNext = () => {
@@ -40,7 +43,7 @@ export const BookFlightStepper = () => {
       alert("Se debe seleccionar 1 asiento como minimo en Ida")
       return; 
     }
-    if(booking.selectedSeatingBack.length == 0){
+    if(booking.selectedSeatingBack.length == 0){      
       alert("Se debe seleccionar 1 asiento como minimo en Vuelta")
       return; 
     }
@@ -62,6 +65,8 @@ export const BookFlightStepper = () => {
       tempBooking.passengers = tempPassengers
       setBooking(tempBooking)
     }
+
+    console.log("🚀 ~ file: booking:", booking)
   };
 
   const handleBack = () => {
