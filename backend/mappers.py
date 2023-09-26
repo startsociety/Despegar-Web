@@ -7,7 +7,6 @@ def client_mapper(client_data):
         "phone": client_data.phone,
         "address": client_data.address,
         "city": client_data.city,
-        "country": client_data.country,
         "birthday": str(client_data.birthday),
         "sex": client_data.sex
     }
