@@ -6,12 +6,12 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { AddPassengers } from './AddPassengers';
-import { BookFlight } from './BookFlight';
-import { Container, Stack } from '@mui/material';
+import { Container } from '@mui/material';
 import { useNavigate } from 'react-router'
 import { useParams } from 'react-router-dom';
 import { flightPresenter } from '../../presenter/FlightPresenter'
 import { FlightConfirm } from './FlightConfirm';
+import { FlightSeatsReserve } from './FlightSeatsReserve';
 
 const steps = ['Seleccionar asientos', '¿Quienes viajan?', 'Confirmar'];
 
@@ -155,31 +155,7 @@ export const BookFlightStepper = () => {
                   <FlightConfirm booking={booking} />
                 </ Box>                  
                 :
-                  <Stack>
-                    <Box sx={{color:'purple'}}>
-                      <h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
-                        Reserve sus asientos
-                      </h1>
-                    </Box>
-                    {
-                      (flightId != 'null') ?
-                          <BookFlight title="Ida" booking={booking} setBooking={setBooking} idFlight={flightId}
-                           selectedSeating={selectedSeating}
-                           setSelectedSeating={setSelectedSeating}
-                           />
-                      :
-                        null 
-                    }
-                    {
-                      (flightBackId != 'null') ?
-
-                          <BookFlight title="Vuelta" booking={booking} setBooking={setBooking} type='back' idFlight={flightBackId}
-                           selectedSeating={selectedSeatingBack}
-                           setSelectedSeating={setSelectedSeatingBack} />
-                      :
-                        null 
-                    }
-                  </Stack>
+                  FlightSeatsReserve(flightId, booking, setBooking, selectedSeating, setSelectedSeating, flightBackId, selectedSeatingBack, setSelectedSeatingBack)
               )            
             }
             

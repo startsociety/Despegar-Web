@@ -26,7 +26,7 @@ const Flight = (props) => {
                 alt="Vuelo"
             />
             <CardContent>
-                <Stack >
+                <Stack>
                     <Typography sx={{justifySelf:'center'}} gutterBottom variant="h6" component="div">
                     {`${flight.origin.city} a ${flight.destination.city}`}
                     </Typography>
