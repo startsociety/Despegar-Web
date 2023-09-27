@@ -4,7 +4,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+
 import { AddPassengers } from './AddPassengers';
 import { Container, Stack } from '@mui/material';
 import { useNavigate } from 'react-router'
@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { flightPresenter } from '../../presenter/FlightPresenter'
 import { FlightConfirm } from './FlightConfirm';
 import { BookFlight } from './BookFlight';
+import confirm_flight from '../../assets/confirm_flight.png'
 
 const steps = ['Seleccionar asientos', '¿Quienes viajan?', 'Confirmar'];
 
@@ -214,16 +215,26 @@ export const BookFlightStepper = () => {
           })}
         </Stepper>
         {activeStep === steps.length ? (
-          <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              Se realizo la reserva correctamente
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={toHome}>
-                Volver a inicio
-              </Button>
-            </Box>
+          <React.Fragment>          
+            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, justifyContent:'center' }}>
+              <Stack sx={{justifyContent:'center'}}>
+                <Box sx={{color:'purple', justifyContent:'center'}}>
+                  <Box>
+                    <h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
+                        Se realizo la reserva correctamente
+                    </h1>                  
+                  </Box>
+                  <Box sx={{marginLeft:'100px'}}>
+                    <img src={confirm_flight} width={"450px"} height={"450px"}></img>
+                  </Box>                      
+                </Box>
+                <Box sx={{ flex: '1 1 auto' }} />
+                <Button onClick={toHome} size="large" color="secondary">
+                  Volver a inicio
+                </Button>
+              </Stack>
+            </Box>         
+            
           </React.Fragment>
         ) : (
           <React.Fragment>

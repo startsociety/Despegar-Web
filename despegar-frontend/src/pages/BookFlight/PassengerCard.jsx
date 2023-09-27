@@ -61,7 +61,7 @@ export const PassengerCard = (props) => {
         return(
             <Paper elevation={3} sx={{maxWidth:"400px", margin:"20px"}}>
                 <Box m={3} >
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1}>
                         <Grid container item justifyContent="center" >
                             <Box m={3}>
                                 <Typography variant="h5" color="initial"> 
@@ -115,29 +115,29 @@ export const PassengerCard = (props) => {
                                     </Select>
                             </FormControl>
                         </Grid>
-
-                        <Divider variant="fullWidth" sx={{marginTop: "10px", marginBottom: "10px"}} />
-                        <Grid item container sx={{width: "100%"}}>
+     
+                        <Grid item container>
                             <TextField
                                     fullWidth
+                                    style={{ width:"100%"}}
                                     id="outlined-required"
                                     label="Nombre/s"
                                     name="firstname"
                                     onChange={e => { handleChangeName(e.target.value) }}
                                     value={passenger.name}
-                                />
+                            />
                         </Grid>
-                        <Grid item container>
-                            <FormControl fullWidth sx={{marginTop:"10px"}}>
-                                <TextField 
-                                        name="dni"
-                                        id="outlined-required"
-                                        label="DNI"
-                                        type="number"
-                                        value={passenger.document}
-                                        onChange={e => { handleChangeDocument(e.target.value) }}
-                                    />
-                            </FormControl>
+                        <Grid item container sx={{margin:"0px", padding:"0px"}}>
+                            <TextField 
+                                    fullWidth
+                                    style={{ width:"100%"}}
+                                    name="dni"
+                                    id="outlined-required"
+                                    label="DNI"
+                                    type="number"
+                                    value={passenger.document}
+                                    onChange={e => { handleChangeDocument(e.target.value) }}
+                                />
                         </Grid>
                         <Grid item container>
                             <FormControl fullWidth sx={{marginTop:"10px"}}>

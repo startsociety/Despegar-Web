@@ -14,9 +14,13 @@ export const FlightConfirm = (props) => {
         noValidate
         autoComplete="off"
     >
-        <Grid container rowSpacing={1}>
-            <Stack>
-                <h2>Información de vuelo:</h2>
+        <Grid container rowSpacing={1} sx={{justifyContent:'center'}}>
+            <Stack sx={{justifyContent:'center'}}>
+                <Box sx={{color:'purple'}}>
+                    <h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
+                    Información de vuelo:
+                    </h1>
+                </Box>
                 <Stack direction="row" spacing={2} alignItems={"center"} justifyContent={"start"}>
                     {FlightInformation(booking.flight, "Vuelo de ida")}
                     <CompareArrowsIcon/> 
@@ -24,10 +28,14 @@ export const FlightConfirm = (props) => {
                 </Stack>
             </Stack>
         </Grid>
-        <Grid container rowSpacing={1} sx={{marginTop:"30px" }}>
+        <Grid container rowSpacing={1} sx={{marginTop:"30px", justifyContent:'center' }}>
             <Stack>
-                <h2>Información de pasajeros:</h2>
-                <Stack direction="row" spacing={2} alignItems={"center"} justifyContent={"start"}>
+                <Box sx={{color:'purple'}}>
+                    <h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
+                    Información de pasajeros:
+                    </h1>
+                </Box>
+                <Stack direction="row" spacing={5} alignItems={"center"} justifyContent={"start"}>
                     {
                         booking.passengers.map((passenger, index) => (
                             PassengerInfo(passenger, index)      
@@ -42,8 +50,12 @@ export const FlightConfirm = (props) => {
     function FlightInformation(flight, title) {
         return <Grid container rowSpacing={1} >
             <Paper elevation={3} sx={{minWidth:"300px", padding:"15px"}}>
-                <Typography fontWeight="fontWeightBold" sx={{justifySelf:"center"}}>{title}</Typography>
-                <Typography fontWeight="fontWeightBold" marginTop={"10px"}>Origen:</Typography>
+                <Typography fontWeight="fontWeightBold" sx={{justifySelf:"center", color:'purple'}}>
+                    {title}
+                </Typography>
+                <Typography fontWeight="fontWeightBold" marginTop={"10px"}>
+                    Origen:
+                </Typography>
                 <Typography >
                     {`(${flight.origin.code}) ${flight.origin.city}`}
                 </Typography>
@@ -71,28 +83,42 @@ export const FlightConfirm = (props) => {
 function PassengerInfo(passenger, index) {
     return <Grid container rowSpacing={1}>
         <Paper elevation={3} sx={{ minWidth: "300px", padding: "15px" }}>
-            <Typography fontWeight="fontWeightBold" sx={{ justifySelf: "center" }}>{`Pasajero ${index + 1}`}</Typography>
-            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>Nombre:</Typography>
+            <Typography fontWeight="fontWeightBold" sx={{ justifySelf: "center", color:'purple'  }}>
+                {`Pasajero ${index + 1}`}
+            </Typography>
+            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>
+                Nombre:
+            </Typography>
             <Typography>
                 {`${passenger.name}`}
             </Typography>
-            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>Documento:</Typography>
+            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>
+                Documento:
+            </Typography>
             <Typography>
                 {`${passenger.document}`}
             </Typography>
-            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>Genero:</Typography>
+            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>
+                Genero:
+            </Typography>
             <Typography>
                 {`${passenger.sex}`}
             </Typography>
-            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>Pais:</Typography>
+            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>
+                Pais:
+            </Typography>
             <Typography>
                 {`${passenger.country}`}
             </Typography>
-            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>Asiento de ida:</Typography>
+            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>
+                Asiento de ida:
+            </Typography>
             <Typography>
                 {`${passenger.seat}`}
             </Typography>
-            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>Asiento de vuelta:</Typography>
+            <Typography fontWeight="fontWeightBold" marginTop={"10px"}>
+                Asiento de vuelta:
+            </Typography>
             <Typography>
                 {`${passenger.seatBack}`}
             </Typography>

@@ -26,7 +26,7 @@ export const AddPassengers = (props) => {
                 Completar información de pasajeros:
             </h1>
         </Box>
-        <Grid container rowSpacing={1}>
+        <Grid container sx={{justifyContent:'center'}}>
             {
                 booking.passengers.map((passenger, index) => (
                     <PassengerCard
