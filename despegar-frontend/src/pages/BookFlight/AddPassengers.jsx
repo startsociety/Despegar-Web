@@ -1,6 +1,5 @@
 import React from "react";
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import { Grid, Box } from "@mui/material";
 import { PassengerCard } from "./PassengerCard";
 
 export const AddPassengers = (props) => {
@@ -21,22 +20,26 @@ export const AddPassengers = (props) => {
       }}
       noValidate
       autoComplete="off"
-  >
-      <h2>Completar información de pasajeros:</h2>
-      <Grid container rowSpacing={1}>
-          {
-              booking.passengers.map((passenger, index) => (
-                  <PassengerCard
-                      key={index}
-                      booking={booking}
-                      passenger={passenger}
-                      setPassenger={(event) => setPassenger(event, index)}
-                      indexPassenger={index}
-                  />
-              ))
-          }
-      </Grid>
-  </Box>
+      >
+        <Box sx={{color:'purple', marginLeft: "25px"}}>
+            <h1 style={{ fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
+                Completar información de pasajeros:
+            </h1>
+        </Box>
+        <Grid container rowSpacing={1}>
+            {
+                booking.passengers.map((passenger, index) => (
+                    <PassengerCard
+                        key={index}
+                        booking={booking}
+                        passenger={passenger}
+                        setPassenger={(event) => setPassenger(event, index)}
+                        indexPassenger={index}
+                    />
+                ))
+            }
+        </Grid>
+    </Box>
   );
 
 }

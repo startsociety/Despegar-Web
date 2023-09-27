@@ -15,8 +15,6 @@ export const flightPresenter = () => {
                 return getMock().flights
             }
 
-            console.log("filter request=>", filter)
-
             const res = await axios.get(`${baseUrl}/flights`, {
                 params: {
                     from: filter.from ,
@@ -28,7 +26,6 @@ export const flightPresenter = () => {
                     max_flight_time:filter.max_flight_time
                 }
               });
-              console.log(res)
 
             const result = await res.data;
 
@@ -65,7 +62,6 @@ export const flightPresenter = () => {
                 }
               });
 
-            console.log("getFlightsBack => ", res)
             const result = await res.data;
 
             return result
@@ -139,14 +135,10 @@ export const flightPresenter = () => {
                 
                 body.passengers.push(passTemp)
             });        
+            
+            const res = await axios.post(`${baseUrl}/book-flight`, body);
+            return res;
 
-            const headers = 
-            {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            };
-
-            const res = await axios.post(`${baseUrl}/book-flight`, body, { headers });
-            return res.data;
         } catch (err) {
             console.log('err => ' , err)
         }

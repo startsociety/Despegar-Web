@@ -53,7 +53,6 @@ export const FlightDetails = (props) => {
           setFlightIda(res)
           setOrigin(res.origin)
           setDestination(res.destination)
-          console.log("🚀 ~ file: FightDetails.jsx:56 ~ .then ~ res.destination:", res.destination)
           
           getFlightsBack(res.origin.id, res.destination.id)
           .then((response) => {
@@ -76,7 +75,6 @@ export const FlightDetails = (props) => {
     };
   
     const url = `/book-flight/${queryParams.flightId}/${queryParams.flightBackId}`;
-    console.log("url =>", url)
     navigate(url);
   }
 

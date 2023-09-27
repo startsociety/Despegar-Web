@@ -3,7 +3,9 @@ import Box from '@mui/material/Box';
 import { BookFlight } from './BookFlight';
 import { Stack } from '@mui/material';
 
-export function FlightSeatsReserve(flightId, booking, setBooking, selectedSeating, setSelectedSeating, flightBackId, selectedSeatingBack, setSelectedSeatingBack) {
+//DEPRECATED
+export function FlightSeatsReserve(props) {
+  const {flightId, booking, setBooking, selectedSeating, setSelectedSeating, flightBackId, selectedSeatingBack, setSelectedSeatingBack} = props
   return <Stack>
     <Box sx={{ color: 'purple' }}>
       <h1 style={{ fontFamily: 'sans-serif', fontWeight: 700, letterSpacing: 3, color: 'purple' }}>
