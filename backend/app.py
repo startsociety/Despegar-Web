@@ -210,17 +210,17 @@ def get_flights():
         filters = set()
 
         if request.args.get("from") and request.args.get("to"):
-            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
-            date_to = datetime.strptime(request.args.get("to"), '%d/%m/%Y')
+            date_from = datetime.strptime(request.args.get("from"), '%Y-%m-%d')
+            date_to = datetime.strptime(request.args.get("to"), '%Y-%m-%d')
             filters.add(Flights.departure_datetime.between(date_from, date_to))
 
         elif request.args.get("from"):
-            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+            date_from = datetime.strptime(request.args.get("from"), '%Y-%m-%d')
             date_to = datetime.strptime("12/12/2999", '%d/%m/%Y')
             filters.add(Flights.departure_datetime.between(date_from, date_to))
 
         elif request.args.get("to"):
-            date_to = datetime.strptime(request.args.get("to"), '%d/%m/%Y')
+            date_to = datetime.strptime(request.args.get("to"), '%Y-%m-%d')
             now = datetime.now()
             filters.add(Flights.departure_datetime.between(now, date_to))
 
@@ -270,12 +270,13 @@ def get_flights_back():
     try:
         filters = set()
 
-        if request.args.get("origin"):
+        if request.args.get("origin") and request.args.get("destination"):
             origin = int(request.args.get("origin"))
-            filters.add(Flights.origin == origin)
+            destination = int(request.args.get("destination"))
+            filters.add(and_(Flights.origin == origin, Flights.destination == destination))
 
         if request.args.get("from"):
-            date_from = datetime.strptime(request.args.get("from"), '%d/%m/%Y')
+            date_from = datetime.strptime(request.args.get("from"), '%Y-%m-%d')
             filters.add(Flights.arrival_datetime > date_from)
 
         flights = Flights.query.filter(*filters).all()
@@ -323,6 +324,7 @@ def get_flight_seats(flight_id):
 
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+
 
 """
 @app.route("/book-flight", methods=["POST"])
@@ -372,6 +374,7 @@ def book_flight():
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
 """
 
+
 @app.route("/book-flight", methods=["POST"])
 def book_flight():
     try:
@@ -384,57 +387,62 @@ def book_flight():
                      'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'E5': 1, 'E6': 1,
                      'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'F5': 1, 'F6': 1}
 
-        seats = list(all_seats.keys())
+        seats_keys = list(all_seats.keys())
 
         response = None
 
-        flight_id = request.json['flight_id']
+        flights_id = request.json['flight_id']
         passengers = request.json['passengers']
-        flight = Flights.query.filter_by(id=flight_id).first()
 
-        if flight is None:
-            raise ValueError(
-                "Flight with id {} does not exist".format(flight_id))
+        for i in range(0, len(flights_id)):
+            flight_id = flights_id[i]
+            flight = Flights.query.filter_by(id=flight_id).first()
 
-        for passenger in passengers:
+            if flight is None:
+                raise ValueError(
+                    "Flight with id {} does not exist".format(flight_id))
 
-            seat = passenger["seat"].upper()
-            if seat not in seats:
-                raise ValueError('Seat is not correct')
+            for passenger in passengers:
+                seats = passenger["seat"]
 
-            passenger_data = Passengers.query.filter_by(
-                document=passenger['document']).first()
-            if passenger_data is None:
+                for seat in seats:
+                    seat = seat.upper()
+                    if seat not in seats_keys:
+                        raise ValueError('Seat is not correct')
 
-                name = passenger["name"]
-                document = passenger["document"]
-                country = passenger["country"]
-                sex = passenger["sex"]
+                passenger_data = Passengers.query.filter_by(
+                    document=passenger['document']).first()
+                if passenger_data is None:
 
-                passenger = Passengers(
-                    name=name, document=document, country=country, sex=sex)
+                    name = passenger["name"]
+                    document = passenger["document"]
+                    country = passenger["country"]
+                    sex = passenger["sex"]
 
-                db_session.add(passenger)
-                db_session.commit()
+                    passenger = Passengers(
+                        name=name, document=document, country=country, sex=sex)
 
-                passenger_saved = Passengers.query.filter_by(
-                    document=document).first()
+                    db_session.add(passenger)
+                    db_session.commit()
 
-                passenger_flight = PassengerFlights(
-                    passenger_id=passenger_saved.id, flight_id=flight_id, seat=seat)
+                    passenger_saved = Passengers.query.filter_by(
+                        document=document).first()
 
-                db_session.add(passenger_flight)
-                db_session.commit()
+                    passenger_flight = PassengerFlights(
+                        passenger_id=passenger_saved.id, flight_id=flight_id, seat=seats[i])
 
-            else:
-                passenger_flight = PassengerFlights(
-                    passenger_id=passenger_data.id, flight_id=flight_id, seat=seat)
+                    db_session.add(passenger_flight)
+                    db_session.commit()
 
-                db_session.add(passenger_flight)
-                db_session.commit()
+                else:
+                    passenger_flight = PassengerFlights(
+                        passenger_id=passenger_data.id, flight_id=flight_id, seat=seats[i])
 
-        response = Response("Flight {} was booked by {} passengers successfully".format(
-            flight.id, len(passengers)), status=201, mimetype='application/json')
+                    db_session.add(passenger_flight)
+                    db_session.commit()
+
+        response = Response("Flight was booked by {} passengers successfully".format(
+            len(passengers)), status=201, mimetype='application/json')
 
         return response
 

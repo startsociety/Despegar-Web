@@ -7,8 +7,6 @@ export const airportPresenter = () => {
     const getAirports = async () => {
         try {
             const res = await axios.get(`${baseUrl}/airports`);
-              console.log("airports => ", res)
-
             const result = await res.data;
 
             return result

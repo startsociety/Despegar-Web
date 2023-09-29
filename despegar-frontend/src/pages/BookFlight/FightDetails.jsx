@@ -75,6 +75,7 @@ export const FlightDetails = (props) => {
     };
   
     const url = `/book-flight/${queryParams.flightId}/${queryParams.flightBackId}`;
+    console.log("url =>", url)
     navigate(url);
   }
 
