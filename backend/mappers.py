@@ -31,7 +31,8 @@ def airport_mapper(airport_data):
         "code": airport_data.code,
         "name": airport_data.name,
         "city": airport_data.city,
-        "country": airport_data.country
+        "country": airport_data.country,
+        "image": airport_data.image
     }
 
 

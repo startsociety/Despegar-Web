@@ -245,11 +245,6 @@ def get_flights():
             price_max = float(request.args.get("price_max"))
             filters.add(Flights.price.between(float(0), price_max))
 
-        if request.args.get("max_flight_time"):
-            minutes = int(request.args.get("max_flight_time"))
-            max_flight_time = timedelta(minutes=minutes)
-            filters.add(Flights.flight_time <= max_flight_time)
-
         flights = Flights.query.filter(*filters).all()
 
         response = []
@@ -264,6 +259,8 @@ def get_flights():
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
 
+# agregar id de usuario a tabla de pasajeros_vuelos porque si un pasajero reserva con toda la flia en el hisotrial va a ver solo su vuelo y no el de todos
+
 
 @app.route("/flights-back", methods=["GET"])
 def get_flights_back():
@@ -273,10 +270,12 @@ def get_flights_back():
         if request.args.get("origin") and request.args.get("destination"):
             origin = int(request.args.get("origin"))
             destination = int(request.args.get("destination"))
-            filters.add(and_(Flights.origin == origin, Flights.destination == destination))
+            filters.add(and_(Flights.origin == origin,
+                        Flights.destination == destination))
 
         if request.args.get("from"):
-            date_from = datetime.strptime(request.args.get("from"), '%Y-%m-%d')
+            date_from = datetime.strptime(
+                request.args.get("from"), '%Y-%m-%d %H:%M:%S')
             filters.add(Flights.arrival_datetime > date_from)
 
         flights = Flights.query.filter(*filters).all()
@@ -307,7 +306,7 @@ def get_flight_seats(flight_id):
         response = None
 
         seats_booked_query = PassengerFlights.query.filter(
-            flight_id == flight_id).all()
+            PassengerFlights.flight_id == flight_id).all()
 
         seats_booked_data = []
 
@@ -324,55 +323,6 @@ def get_flight_seats(flight_id):
 
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
-
-
-"""
-@app.route("/book-flight", methods=["POST"])
-def book_flight():
-    try:
-        response = None
-
-        all_seats = {'A1': 1, 'A2': 1, 'A3': 1, 'A4': 1, 'A5': 1, 'A6': 1,
-                     'B1': 1, 'B2': 1, 'B3': 1, 'B4': 1, 'B5': 1, 'B6': 1,
-                     'C1': 1, 'C2': 1, 'C3': 1, 'C4': 1, 'C5': 1, 'C6': 1,
-                     'D1': 1, 'D2': 1, 'D3': 1, 'D4': 1, 'D5': 1, 'D6': 1,
-                     'E1': 1, 'E2': 1, 'E3': 1, 'E4': 1, 'E5': 1, 'E6': 1,
-                     'F1': 1, 'F2': 1, 'F3': 1, 'F4': 1, 'F5': 1, 'F6': 1}
-
-        response = None
-
-        seats = list(all_seats.keys())
-        # TO-DO: verificar que el asiento al momento de reservar no esté ocupado, reutilizar /flight/<flight_id>/seats
-        if request.form.get("seat"):
-            seat = request.form.get("seat").upper()
-            if seat not in seats:
-                raise ValueError('Seat is not correct')
-
-        passenger_id = request.form.get("passenger_id")
-        flight_id = request.form.get("flight_id")
-
-        passenger = Passengers.query.filter_by(id=passenger_id).first()
-        flight = Flights.query.filter_by(id=flight_id).first()
-
-        if passenger is None:
-            response = Response("Passenger with id {} does not exist".format(
-                passenger_id), status=404, mimetype='application/json')
-        elif flight is None:
-            response = Response("Flight with id {} does not exist".format(
-                flight_id), status=404, mimetype='application/json')
-        else:
-            passenger_flight = PassengerFlights(
-                passenger_id=passenger_id, flight_id=flight_id, seat=seat)
-
-            db_session.add(passenger_flight)
-            db_session.commit()
-            response = Response("Flight {} was booked by passenger with document {} with seat {} successfully".format(
-                flight.id, passenger.document, seat), status=201, mimetype='application/json')
-        return response
-
-    except Exception as e:
-        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
-"""
 
 
 @app.route("/book-flight", methods=["POST"])

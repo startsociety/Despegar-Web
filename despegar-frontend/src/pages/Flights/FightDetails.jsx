@@ -54,7 +54,7 @@ export const FlightDetails = (props) => {
           setOrigin(res.origin)
           setDestination(res.destination)
           
-          getFlightsBack(res.origin.id, res.destination.id)
+          getFlightsBack(res.origin.id, res.destination.id, res.arrival_datetime)
           .then((response) => {
             setFlightBacks(response)            
           })

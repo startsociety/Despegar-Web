@@ -22,7 +22,8 @@ const Flight = (props) => {
             <CardMedia
                 component="img"
                 height="140"
-                image={images[Math.floor(Math.random() * images.length)]}
+                /*image={images[Math.floor(Math.random() * images.length)]}*/
+                image={flight.destination.image}
                 alt="Vuelo"
             />
             <CardContent>

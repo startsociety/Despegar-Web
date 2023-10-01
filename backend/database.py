@@ -54,6 +54,7 @@ class Airports(Base):
     name = Column(String, nullable=False)
     city = Column(String, nullable=False)
     country = Column(String, nullable=False)
+    image = Column(String)
 
 
 class Passengers(Base):

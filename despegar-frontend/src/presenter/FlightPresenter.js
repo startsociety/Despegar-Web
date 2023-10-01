@@ -17,7 +17,7 @@ export const flightPresenter = () => {
 
             const res = await axios.get(`${baseUrl}/flights`, {
                 params: {
-                    from: filter.from ,
+                    from: filter.from,
                     to: filter.to,
                     origin: filter.origin != null ? filter.origin.id : null,
                     destination: filter.destination != null ? filter.destination.id : null,
@@ -52,13 +52,14 @@ export const flightPresenter = () => {
         }
     }
 
-    const getFlightsBack = async (origin, destination) => {
+    const getFlightsBack = async (origin, destination, arrival_datetime) => {
         try {
 
             const res = await axios.get(`${baseUrl}/flights-back`, {
                 params: {
                     origin: origin,
-                    destination: destination ,
+                    destination: destination,
+                    from: arrival_datetime
                 }
               });
 
