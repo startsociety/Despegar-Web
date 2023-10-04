@@ -51,15 +51,15 @@ export const PayFlight = (props) => {
                                         />
                                     </FormControl>
                                 </Grid>
-                                <Stack direction={"row"} justifyContent={"space-between"} sx={{ m: 1, paddingRight:"10px", paddingLeft:"10px" }}>
-                                    <FormControl sx={{ m: 1, marginRight:"10px" }} variant="standard">
+                                <Stack direction={"row"} fullWidth justifyContent={"space-between"} sx={{ m: 1, paddingRight:"10px", paddingLeft:"10px" }}>
+                                    <FormControl fullWidth sx={{ m: 1, marginRight:"10px" }} variant="standard">
                                         <InputLabel htmlFor="standard-adornment-amount"> Mes de vencimiento </InputLabel>
                                         <Input
                                             id="standard-adornment-amount"
                                             startAdornment={<CalendarMonthIcon position="start"/>}
                                         />
                                     </FormControl>
-                                    <FormControl  sx={{ m: 1, marginRight:"10px" }} variant="standard">
+                                    <FormControl fullWidth sx={{ m: 1, marginRight:"10px" }} variant="standard">
                                         <InputLabel htmlFor="standard-adornment-amount">CVC</InputLabel>
                                         <Input
                                             id="standard-adornment-amount"
