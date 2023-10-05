@@ -24,10 +24,18 @@ const STEPS_ID = {
   "confirm": 3,
 }
 
+const payment_method = {
+  "Tarjeta": 1,
+  "Efectivo":2,
+  "MercadoPago":3,
+  "Cripto":4,
+}
+
 export const BookFlightStepper = () => {
   const navigate = useNavigate();
   const { getById, bookingFlight } = flightPresenter()
   const { flightId, flightBackId } = useParams();
+  const [expandedAccordion, setExpandedAccordion] = useState(payment_method.Tarjeta);
 
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -86,8 +94,8 @@ export const BookFlightStepper = () => {
       validate = StepPassengers()
     }
 
-    if(activeStep == STEPS_ID.pay_flight) {
-      validate = true
+    if(activeStep == STEPS_ID.pay_flight) {      
+      validate = StepPayFlight()
     }
 
 
@@ -188,6 +196,17 @@ export const BookFlightStepper = () => {
     return true;
   }
 
+  function StepPayFlight(){
+    let validate = false;
+
+    if(expandedAccordion != null)
+      validate = true;
+    else
+      alert("Se debe seleccionar un metodo de pago para continuar");
+
+    return validate;
+  }
+
   const StepFlightConfirm = () => {
     bookingFlight(booking)
     .then((res) => {
@@ -275,7 +294,9 @@ export const BookFlightStepper = () => {
                   (
                     (activeStep == 2)
                     ?
-                      <PayFlight booking={booking} setBooking={setBooking} />
+                      <PayFlight payment_method={payment_method} 
+                                 expandedAccordion={expandedAccordion} setExpandedAccordion={setExpandedAccordion}
+                                 booking={booking} setBooking={setBooking} />
                     :
                       <Box sx={{marginTop:"30px", alignContent:"center", justifyItems:"center"}}>
                         <FlightConfirm booking={booking} />
