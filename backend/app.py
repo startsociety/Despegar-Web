@@ -1,7 +1,7 @@
 from flask import Flask, request, Response
 from flask_cors import CORS
 from sqlalchemy import or_, and_
-from datetime import datetime, timedelta
+from datetime import datetime
 import json
 import logging
 import jwt
@@ -259,8 +259,6 @@ def get_flights():
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
 
-# agregar id de usuario a tabla de pasajeros_vuelos porque si un pasajero reserva con toda la flia en el hisotrial va a ver solo su vuelo y no el de todos
-
 
 @app.route("/flights-back", methods=["GET"])
 def get_flights_back():
@@ -341,8 +339,15 @@ def book_flight():
 
         response = None
 
+        client_id = request.json['client_id']
         flights_id = request.json['flight_id']
         passengers = request.json['passengers']
+        price = request.json['price'] if 'price' in request.json else None
+        discounts = request.json['discounts'] if 'discounts' in request.json else None
+        payment_type = request.json['payment_type'] if 'payment_type' in request.json else None
+        payment_date = datetime.strptime(
+            request.json['payment_date'], '%d/%m/%Y') if 'payment_date' in request.json else None
+        payment_status = request.json['payment_status'] if 'payment_status' in request.json else None
 
         for i in range(0, len(flights_id)):
             flight_id = flights_id[i]
@@ -378,15 +383,15 @@ def book_flight():
                     passenger_saved = Passengers.query.filter_by(
                         document=document).first()
 
-                    passenger_flight = PassengerFlights(
-                        passenger_id=passenger_saved.id, flight_id=flight_id, seat=seats[i])
+                    passenger_flight = PassengerFlights(client_id=client_id, passenger_id=passenger_saved.id, flight_id=flight_id,
+                                                        seat=seats[i], price=price, discounts=discounts, payment_type=payment_type, payment_date=payment_date, payment_status=payment_status)
 
                     db_session.add(passenger_flight)
                     db_session.commit()
 
                 else:
-                    passenger_flight = PassengerFlights(
-                        passenger_id=passenger_data.id, flight_id=flight_id, seat=seats[i])
+                    passenger_flight = PassengerFlights(client_id=client_id, passenger_id=passenger_data.id, flight_id=flight_id,
+                                                        seat=seats[i], price=price, discounts=discounts, payment_type=payment_type, payment_date=payment_date, payment_status=payment_status)
 
                     db_session.add(passenger_flight)
                     db_session.commit()
