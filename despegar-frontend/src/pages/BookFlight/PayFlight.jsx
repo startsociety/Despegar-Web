@@ -34,11 +34,19 @@ export const PayFlight = (props) => {
     return (
         <Grid container rowSpacing={1} sx={{justifyContent:'center', marginTop:"30px", marginBottom:"30px"}}>
             <Stack spacing={3} sx={{justifyContent:'center'}}>
-                <Box sx={{ color:'purple'}}>
-                    <h1 style={{fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
-                        Pagar vuelo
-                    </h1>
-                </Box>
+                <Stack spacing={1}>
+                    <Box sx={{ color:'purple'}}>
+                        <h1 style={{fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'purple'}}>
+                            Pagar vuelo
+                        </h1>
+                        
+                    </Box>
+                    <Box>
+                        <h4 style={{fontFamily: 'sans-serif',fontWeight: 700, letterSpacing: 3, color: 'black'}}>
+                            {"El valor total de tu reserva es de: $" + booking.price}
+                        </h4>
+                    </Box>
+                </Stack>
                 <Stack direction="row" spacing={3} alignItems={"center"} justifyContent={"start"}>
                     <div>
                         <Accordion expanded={expandedAccordion === payment_method.Tarjeta} onChange={handleChange(payment_method.Tarjeta)} sx={{justifyContent:'center', alignItems:'center'}}>
@@ -47,7 +55,7 @@ export const PayFlight = (props) => {
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                             >
-                                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                <Typography sx={{ width: '33%', flexShrink: 0 }} fontWeight="bold">
                                     Tarjeta
                                 </Typography>
                                 <Typography sx={{ color: 'text.secondary' }}>Credito / Debito</Typography>
@@ -98,7 +106,9 @@ export const PayFlight = (props) => {
                             aria-controls="panel2bh-content"
                             id="panel2bh-header"
                             >
-                            <Typography sx={{ width: '33%', flexShrink: 0 }}>Efectivo</Typography>
+                            <Typography sx={{ width: '33%', flexShrink: 0 }}  fontWeight="bold">
+                                Efectivo
+                            </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                             <Typography>
@@ -125,7 +135,7 @@ export const PayFlight = (props) => {
                             aria-controls="panel3bh-content"
                             id="panel3bh-header"
                             >
-                            <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                            <Typography sx={{ width: '33%', flexShrink: 0 }}  fontWeight="bold">
                                 Mercado Pago
                             </Typography>
                             <Typography sx={{ color: 'text.secondary' }}>
@@ -162,11 +172,11 @@ export const PayFlight = (props) => {
                             aria-controls="panel3bh-content"
                             id="panel3bh-header"
                             >
-                            <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                            <Typography sx={{ width: '33%', flexShrink: 0 }}  fontWeight="bold">
                                 Criptomonedas (BTC/USDT)
                             </Typography>
                             <Typography sx={{ color: 'text.secondary' }}>
-                                {"Proximamente!"}
+                                {"¡Proximamente!"}
                             </Typography>
                             </AccordionSummary>
                         </Accordion>

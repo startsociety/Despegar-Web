@@ -4,7 +4,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-
+import { useLocalStorage } from '../../helpers/useLocalStorage';
 import { AddPassengers } from './AddPassengers';
 import { Container, Stack } from '@mui/material';
 import { useNavigate } from 'react-router'
@@ -35,7 +35,7 @@ export const BookFlightStepper = () => {
   const navigate = useNavigate();
   const { getById, bookingFlight } = flightPresenter()
   const { flightId, flightBackId } = useParams();
-  const [expandedAccordion, setExpandedAccordion] = useState(payment_method.Tarjeta);
+  const [user, setUser] = useLocalStorage('user', '')
 
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -45,6 +45,13 @@ export const BookFlightStepper = () => {
     "selectedSeating": [],
     "selectedSeatingBack": [],
     "passengers": [],
+    "price": null,
+    "discounts": null,
+    "payment_type": 1,
+    "payment_date": new Date().toLocaleDateString(),
+    "payment_status": "Aprobado",
+    "client_id": user.id
+
   });
 
   const [selectedSeating, setSelectedSeating] = useState([]);
@@ -72,6 +79,7 @@ export const BookFlightStepper = () => {
         .then((res) => {
     
           updatedBooking["flightBack"] = res;
+          console.log("🚀 ~ file: BookStepper.jsx:83 ~ .then ~ updatedBooking:", updatedBooking)
           setBooking(updatedBooking);
         
         })
@@ -150,6 +158,19 @@ export const BookFlightStepper = () => {
   function StepPassengers(){
     let validate = validateStepPassengers(booking.passengers)
 
+    if (validate) {
+      let totalPrice = 0;
+      const flightPrice = booking.flight.price;
+      totalPrice += flightPrice * booking.selectedSeating.length;
+
+      if (booking.flightBack) {
+          const flightBackPrice = booking.flightBack.price;
+          totalPrice += flightBackPrice * booking.selectedSeatingBack.length;
+      }
+
+      setBooking(prevBooking => ({ ...prevBooking, price: totalPrice }));
+  }
+
     return validate;
   }
 
@@ -199,7 +220,7 @@ export const BookFlightStepper = () => {
   function StepPayFlight(){
     let validate = false;
 
-    if(expandedAccordion != null)
+    if(booking.payment_type != null)
       validate = true;
     else
       alert("Se debe seleccionar un metodo de pago para continuar");
@@ -294,9 +315,11 @@ export const BookFlightStepper = () => {
                   (
                     (activeStep == 2)
                     ?
-                      <PayFlight payment_method={payment_method} 
-                                 expandedAccordion={expandedAccordion} setExpandedAccordion={setExpandedAccordion}
-                                 booking={booking} setBooking={setBooking} />
+                    <PayFlight payment_method={payment_method} 
+                        expandedAccordion={booking.payment_type} 
+                        setExpandedAccordion={(type) => setBooking(prevBooking => ({ ...prevBooking, payment_type: type }))} 
+                        booking={booking} 
+                        setBooking={setBooking} />
                     :
                       <Box sx={{marginTop:"30px", alignContent:"center", justifyItems:"center"}}>
                         <FlightConfirm booking={booking} />

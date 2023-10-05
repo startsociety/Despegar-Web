@@ -107,9 +107,16 @@ export const flightPresenter = () => {
 
     const bookingFlight = async (booking) => {
         try {
-            const body = {
+            const body = {                
                 flight_id:  [],
-                passengers: []
+                passengers: [],
+                price: booking.price,
+                discounts: booking.discounts,
+                payment_type: booking.payment_type,
+                payment_date: booking.payment_date,
+                payment_status: booking.payment_status,
+                client_id: booking.client_id
+            
             }            
 
             if(booking.flight!=null){
@@ -139,7 +146,7 @@ export const flightPresenter = () => {
             
             const res = await axios.post(`${baseUrl}/book-flight`, body);
             return res;
-
+            
         } catch (err) {
             console.log('err => ' , err)
         }
