@@ -41,7 +41,13 @@ def passenger_flight_mapper(passenger_flight_data):
         "id": passenger_flight_data.id,
         "flight_id": passenger_flight_data.flight_id,
         "passenger_id": passenger_flight_data.passenger_id,
-        "seat": passenger_flight_data.seat
+        "seat": passenger_flight_data.seat,
+        "price": passenger_flight_data.price,
+        "discounts": passenger_flight_data.discounts,
+        "payment_type": passenger_flight_data.payment_type,
+        "payment_date": passenger_flight_data.payment_date,
+        "payment_status": passenger_flight_data.payment_status,
+        "client_id": passenger_flight_data.client_id
     }
 
 

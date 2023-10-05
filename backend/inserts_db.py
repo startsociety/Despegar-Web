@@ -81,11 +81,12 @@ def insertNewAirport(code, name, city, country, image):
         session.close()
 
 
-def insertPassengerFlights(flight_id, passenger_id, seat):
+def insertPassengerFlights(flight_id, passenger_id, seat, client_id):
     new_passenger_flights = PassengerFlights(
-        passenger_id = passenger_id,
-        flight_id = flight_id,
-        seat = seat
+        passenger_id=passenger_id,
+        flight_id=flight_id,
+        seat=seat,
+        client_id=client_id
     )
 
     try:
@@ -97,6 +98,7 @@ def insertPassengerFlights(flight_id, passenger_id, seat):
         print("Error al insertar el vuelo de cliente:", str(e))
     finally:
         session.close()
+
 
 def insertNewPassenger(name, document, country, sex):
 
@@ -116,6 +118,7 @@ def insertNewPassenger(name, document, country, sex):
         print("Error al insertar el pasajero:", str(e))
     finally:
         session.close()
+
 
 insertNewAirport(
     code="EZE",
@@ -557,23 +560,27 @@ insertNewPassenger(
 insertPassengerFlights(
     passenger_id=1,
     flight_id=3,
-    seat='A1'
+    seat='A1',
+    client_id=1
 )
 
 insertPassengerFlights(
     passenger_id=2,
     flight_id=3,
-    seat='B2'
+    seat='B2',
+    client_id=1
 )
 
 insertPassengerFlights(
     passenger_id=3,
     flight_id=3,
-    seat='C4'
+    seat='C4',
+    client_id=1
 )
 
 insertPassengerFlights(
     passenger_id=4,
     flight_id=3,
-    seat='F1'
+    seat='F1',
+    client_id=1
 )
