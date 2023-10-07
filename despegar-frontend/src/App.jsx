@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react'
+import { NavBar } from "./components/Shared/NavBar";
+import Login from './pages/Authentication/Login'
+import Home from './pages/Home'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useLocalStorage } from './helpers/useLocalStorage';
+import { Register } from './pages/Authentication/Register';
+import { Profile } from './pages/Profile/Profile';
+import { Flights } from './pages/Flights/Flights';
+import { BookFlight } from './pages/BookFlight/BookFlight';
+import { BookFlightStepper } from './pages/BookFlight/BookStepper';
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [user, setUser] = useLocalStorage('user', '')
+
+    return (
+      <>
+      <BrowserRouter>
+        <NavBar user={user} setUser={setUser} />
+        <Routes>
+            <Route index element={user ? <Home /> : <Login user={user} setUser={setUser}/>} />
+            <Route path="/login" element={<Login user={user} setUser={setUser}/>} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/flights" element={<Flights />} />
+            <Route path="/book-flight/:flightId/:flightBackId?" element={<BookFlightStepper />} />
+        </Routes>
+      </BrowserRouter>
+      </>
+    )
 }
-
-export default App
+  export default App
