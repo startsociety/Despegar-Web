@@ -4,7 +4,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-
+import { useLocalStorage } from '../../helpers/useLocalStorage';
 import { AddPassengers } from './AddPassengers';
 import { Container, Stack } from '@mui/material';
 import { useNavigate } from 'react-router'
@@ -13,19 +13,29 @@ import { flightPresenter } from '../../presenter/FlightPresenter'
 import { FlightConfirm } from './FlightConfirm';
 import { BookFlight } from './BookFlight';
 import confirm_flight from '../../assets/confirm_flight.png'
+import { PayFlight } from './PayFlight';
 
-const steps = ['Seleccionar asientos', '¿Quienes viajan?', 'Confirmar'];
+const steps = ['Seleccionar asientos', '¿Quienes viajan?', 'Pagar vuelo', 'Confirmar'];
 
 const STEPS_ID = {
   "seats": 0,
   "passengers":1,
-  "confirm": 2,
+  "pay_flight":2,
+  "confirm": 3,
+}
+
+const payment_method = {
+  "Tarjeta": 1,
+  "Efectivo":2,
+  "MercadoPago":3,
+  "Cripto":4,
 }
 
 export const BookFlightStepper = () => {
   const navigate = useNavigate();
   const { getById, bookingFlight } = flightPresenter()
   const { flightId, flightBackId } = useParams();
+  const [user, setUser] = useLocalStorage('user', '')
 
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -35,6 +45,13 @@ export const BookFlightStepper = () => {
     "selectedSeating": [],
     "selectedSeatingBack": [],
     "passengers": [],
+    "price": null,
+    "discounts": null,
+    "payment_type": 1,
+    "payment_date": new Date().toLocaleDateString(),
+    "payment_status": "Aprobado",
+    "client_id": user.id
+
   });
 
   const [selectedSeating, setSelectedSeating] = useState([]);
@@ -62,6 +79,7 @@ export const BookFlightStepper = () => {
         .then((res) => {
     
           updatedBooking["flightBack"] = res;
+          console.log("🚀 ~ file: BookStepper.jsx:83 ~ .then ~ updatedBooking:", updatedBooking)
           setBooking(updatedBooking);
         
         })
@@ -77,13 +95,17 @@ export const BookFlightStepper = () => {
     let validate = false;
 
     if(activeStep == STEPS_ID.seats) {
-      console.log("🚀 ~ entro activeStep")
       validate = StepSeats()
     }
 
     else if(activeStep == STEPS_ID.passengers) {
       validate = StepPassengers()
     }
+
+    if(activeStep == STEPS_ID.pay_flight) {      
+      validate = StepPayFlight()
+    }
+
 
     if(activeStep == STEPS_ID.confirm) {
       StepFlightConfirm()
@@ -117,7 +139,6 @@ export const BookFlightStepper = () => {
 
     let validate = true;
 
-    console.log("🚀 ~ file: BookStepper.jsx:120 ~ validateStepSeats ~ booking.selectedSeating:", booking.selectedSeating)
     if(booking.selectedSeating.length <= 0){
       alert("Se debe seleccionar 1 asiento como minimo en Ida")
       validate = false; 
@@ -136,6 +157,19 @@ export const BookFlightStepper = () => {
 
   function StepPassengers(){
     let validate = validateStepPassengers(booking.passengers)
+
+    if (validate) {
+      let totalPrice = 0;
+      const flightPrice = booking.flight.price;
+      totalPrice += flightPrice * booking.selectedSeating.length;
+
+      if (booking.flightBack) {
+          const flightBackPrice = booking.flightBack.price;
+          totalPrice += flightBackPrice * booking.selectedSeatingBack.length;
+      }
+
+      setBooking(prevBooking => ({ ...prevBooking, price: totalPrice }));
+  }
 
     return validate;
   }
@@ -181,6 +215,17 @@ export const BookFlightStepper = () => {
     }
   
     return true;
+  }
+
+  function StepPayFlight(){
+    let validate = false;
+
+    if(booking.payment_type != null)
+      validate = true;
+    else
+      alert("Se debe seleccionar un metodo de pago para continuar");
+
+    return validate;
   }
 
   const StepFlightConfirm = () => {
@@ -239,38 +284,48 @@ export const BookFlightStepper = () => {
         ) : (
           <React.Fragment>
             {
-              (activeStep == 1)
+              (activeStep == 0)
               ?
-                <AddPassengers booking={booking} setBooking={setBooking} />
-              :
-              (
-                (activeStep == 2)
-                ?
-                <Box sx={{marginTop:"30px", alignContent:"center", justifyItems:"center"}}>
-                  <FlightConfirm booking={booking} />
-                </ Box>                  
-                :
-                  <Stack>
-                      <Box sx={{ color: 'purple' }}>
-                        <h1 style={{ fontFamily: 'sans-serif', fontWeight: 700, letterSpacing: 3, color: 'purple' }}>
-                          Reserve sus asientos
-                        </h1>
-                      </Box>
-                      {(flightId != 'null') ?
-                        <BookFlight title="Ida" booking={booking} setBooking={setBooking} idFlight={flightId}
-                          selectedSeating={selectedSeating}
-                          setSelectedSeating={setSelectedSeating} />
-                        :
-                        null}
-                      {(flightBackId != 'null') ?
+                <Stack>
+                  <Box sx={{ color: 'purple' }}>
+                    <h1 style={{ fontFamily: 'sans-serif', fontWeight: 700, letterSpacing: 3, color: 'purple' }}>
+                      Reserve sus asientos
+                    </h1>
+                  </Box>
+                  {(flightId != 'null') ?
+                    <BookFlight title="Ida" booking={booking} setBooking={setBooking} idFlight={flightId}
+                      selectedSeating={selectedSeating}
+                      setSelectedSeating={setSelectedSeating} />
+                    :
+                    null}
+                  {(flightBackId != 'null') ?
 
-                        <BookFlight title="Vuelta" booking={booking} setBooking={setBooking} type='back' idFlight={flightBackId}
-                          selectedSeating={selectedSeatingBack}
-                          setSelectedSeating={setSelectedSeatingBack} />
-                        :
-                        null}
-                    </Stack>
-              )            
+                    <BookFlight title="Vuelta" booking={booking} setBooking={setBooking} type='back' idFlight={flightBackId}
+                      selectedSeating={selectedSeatingBack}
+                      setSelectedSeating={setSelectedSeatingBack} />
+                    :
+                    null}
+                </Stack>
+                :
+                (
+                  (activeStep == 1)
+                  ?
+                    <AddPassengers booking={booking} setBooking={setBooking} />
+                  :
+                  (
+                    (activeStep == 2)
+                    ?
+                    <PayFlight payment_method={payment_method} 
+                        expandedAccordion={booking.payment_type} 
+                        setExpandedAccordion={(type) => setBooking(prevBooking => ({ ...prevBooking, payment_type: type }))} 
+                        booking={booking} 
+                        setBooking={setBooking} />
+                    :
+                      <Box sx={{marginTop:"30px", alignContent:"center", justifyItems:"center"}}>
+                        <FlightConfirm booking={booking} />
+                      </ Box>       
+                  )
+                )            
             }
             
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>

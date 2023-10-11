@@ -92,29 +92,34 @@ export const PassengerCard = (props) => {
                                     </Select>
                             </FormControl>
                         </Grid>
-                        <Grid item container>
-                            <FormControl fullWidth sx={{marginTop:"10px"}}>
-                                <InputLabel id="demo-simple-select-autowidth-label" style={{fontFamily: 'Lato', fontWeight: 500}}>Asiento de Vuelta</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-autowidth-label"
-                                        id="demo-simple-select-autowidth"
-                                        value={passenger.seatBack}
-                                        onChange={e => { handleChangeSeatingBack(e.target.value) }}
-                                        label="Asiento de Vuelta"
-                                        >
-                                        {
-                                            booking ? booking.selectedSeatingBack.map((seating , index) =>{
-                                                return (
-                                                    <MenuItem id={seating} key={index} value={seating}>
-                                                        {seating}
-                                                    </MenuItem>
-                                                    )
-                                                })
-                                                : null
-                                        }
-                                    </Select>
-                            </FormControl>
-                        </Grid>
+                        {
+                            booking.flightBack ? 
+                            <Grid item container>
+                                <FormControl fullWidth sx={{marginTop:"10px"}}>
+                                    <InputLabel id="demo-simple-select-autowidth-label" style={{fontFamily: 'Lato', fontWeight: 500}}>Asiento de Vuelta</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-autowidth-label"
+                                            id="demo-simple-select-autowidth"
+                                            value={passenger.seatBack}
+                                            onChange={e => { handleChangeSeatingBack(e.target.value) }}
+                                            label="Asiento de Vuelta"
+                                            >
+                                            {
+                                                booking ? booking.selectedSeatingBack.map((seating , index) =>{
+                                                    return (
+                                                        <MenuItem id={seating} key={index} value={seating}>
+                                                            {seating}
+                                                        </MenuItem>
+                                                        )
+                                                    })
+                                                    : null
+                                            }
+                                        </Select>
+                                </FormControl>
+                            </Grid>
+                            : 
+                            null
+                        }
      
                         <Grid item container>
                             <TextField

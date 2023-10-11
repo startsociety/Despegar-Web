@@ -44,6 +44,12 @@ class PassengerFlights(Base):
     passenger_id = Column(ForeignKey("passengers.id"), nullable=False)
     flight_id = Column(ForeignKey("flights.id"), nullable=False)
     seat = Column(String, nullable=False)
+    price = Column(Float)
+    discounts = Column(Float)
+    payment_type = Column(String)
+    payment_date = Column(Date)
+    payment_status = Column(String)
+    client_id = Column(ForeignKey("clients.id"), nullable=False)
 
 
 class Airports(Base):
@@ -54,6 +60,7 @@ class Airports(Base):
     name = Column(String, nullable=False)
     city = Column(String, nullable=False)
     country = Column(String, nullable=False)
+    image = Column(String)
 
 
 class Passengers(Base):

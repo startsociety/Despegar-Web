@@ -61,12 +61,13 @@ def insertNewClient(name, email, document, phone, address, city, birthday, sex, 
         session.close()
 
 
-def insertNewAirport(code, name, city, country):
+def insertNewAirport(code, name, city, country, image):
     new_airport = Airports(
         code=code,
         name=name,
         city=city,
-        country=country
+        country=country,
+        image=image
     )
 
     try:
@@ -80,11 +81,12 @@ def insertNewAirport(code, name, city, country):
         session.close()
 
 
-def insertPassengerFlights(flight_id, passenger_id, seat):
+def insertPassengerFlights(flight_id, passenger_id, seat, client_id):
     new_passenger_flights = PassengerFlights(
-        passenger_id = passenger_id,
-        flight_id = flight_id,
-        seat = seat
+        passenger_id=passenger_id,
+        flight_id=flight_id,
+        seat=seat,
+        client_id=client_id
     )
 
     try:
@@ -96,6 +98,7 @@ def insertPassengerFlights(flight_id, passenger_id, seat):
         print("Error al insertar el vuelo de cliente:", str(e))
     finally:
         session.close()
+
 
 def insertNewPassenger(name, document, country, sex):
 
@@ -116,145 +119,165 @@ def insertNewPassenger(name, document, country, sex):
     finally:
         session.close()
 
+
 insertNewAirport(
     code="EZE",
     name="Aeropuerto Internacional Ministro Pistarini",
     city="Buenos Aires",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1cfsLaTEhOkgMMwk-uac-A9HF0yxOySul"
 )
 
 insertNewAirport(
     code="AEP",
     name="Aeroparque Jorge Newbery",
     city="Buenos Aires",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1cfsLaTEhOkgMMwk-uac-A9HF0yxOySul"
 )
 
 insertNewAirport(
     code="COR",
     name="Aeropuerto Internacional Ingeniero Ambrosio Taravella",
     city="Córdoba",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1wpRLBTNFgedeGnfTvZQgcgcMrK29v4Vd"
 )
 
 insertNewAirport(
     code="MDQ",
     name="Aeropuerto Internacional Astor Piazzolla",
     city="Mar del Plata",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1_XM00QPIDBFZcabuuEZp6-UwrxDECvCL"
 )
 
 insertNewAirport(
     code="SLA",
     name="Aeropuerto Internacional Martín Miguel de Güemes",
     city="Salta",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1xKA6tsRS2V_ilQNVSQob2OvYsxPJI0nU"
 )
 
 insertNewAirport(
     code="ROS",
     name="Aeropuerto Internacional Rosario - Islas Malvinas",
     city="Rosario",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1Hg-Uv7W3w0YY8gc01-xGG4crEuE-O0sa"
 )
 
 insertNewAirport(
     code="FTE",
     name="Aeropuerto Internacional El Calafate",
     city="El Calafate",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1qJsVoBzr5Y57JC_kMpheU4W1k_N1rGSD"
 )
 
 insertNewAirport(
     code="IGR",
     name="Aeropuerto Internacional Cataratas del Iguazú",
     city="Puerto Iguazú",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1xwVYBpPd3xhvExiHdFnYrzPsO4sqPAH2"
 )
 
 insertNewAirport(
     code="USH",
     name="Aeropuerto Internacional Malvinas Argentinas",
     city="Ushuaia",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1JAJ22RyXD-QeDE7ZgEgi8f2JJuKUVkFu"
 )
 
 insertNewAirport(
     code="BRC",
     name="Aeropuerto Internacional San Carlos de Bariloche",
     city="San Carlos de Bariloche",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1SeOBGQ1Mw4UrPxugK5gkoq5lxJMEJ3fe"
 )
 
-# Llama a la función insertNewAirport con más datos de aeropuertos
 insertNewAirport(
     code="BHI",
     name="Aeropuerto Internacional Comandante Espora",
     city="Bahía Blanca",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1v1AiNnoFqP6oLl5CNF8DOsoiLovoLd-3"
 )
 
 insertNewAirport(
     code="CRD",
     name="Aeropuerto Internacional General E. Mosconi",
     city="Comodoro Rivadavia",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1ZcpndF7JFPa33oWUxyirn6FwQiG2G553"
 )
 
 insertNewAirport(
     code="RGA",
     name="Aeropuerto Internacional Piloto Civil Norberto Fernández",
     city="Río Grande",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=170E95dY9PMYYfdop0S9KhNTqqmmzzKWB"
 )
 
 insertNewAirport(
     code="LUQ",
     name="Aeropuerto Internacional Brigadier Mayor César Raúl Ojeda",
     city="San Luis",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1fAbaLkW5-Tc-jKwV4B1eTwqRBADiVphB"
 )
 
 insertNewAirport(
     code="FMA",
     name="Aeropuerto Internacional Formosa",
     city="Formosa",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1jLDyCh3idN0KSFRnYSjlGS02PEyTHBFA"
 )
 
 insertNewAirport(
     code="NQN",
     name="Aeropuerto Internacional Presidente Perón",
     city="Neuquén",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1ZYEWXXVMGMHjq-21dz9rKr_-PPCMyYV8"
 )
 
 insertNewAirport(
     code="PMY",
     name="Aeropuerto Internacional General Enrique Mosconi",
     city="Puerto Madryn",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1tL-Z7YG8WId2iJ9cTu-4fg_Lxx5hKuUo"
 )
 
 insertNewAirport(
     code="TCN",
     name="Aeropuerto General Fernández Oro",
     city="Cipolletti",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1Oekz10enCXKAlJOJLUE0OKBo1nd9Uwyd"
 )
 
 insertNewAirport(
     code="RSA",
     name="Aeropuerto Internacional Santa Rosa",
     city="Santa Rosa",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=1AVJZ9yVMGCHOMIAODLPf_son1mwexrFe"
 )
 
 insertNewAirport(
     code="REL",
     name="Aeropuerto Internacional Almirante Marcos A. Zar",
     city="Trelew",
-    country="Argentina"
+    country="Argentina",
+    image="https://drive.google.com/uc?export=view&id=165bNEMVDMURBZKEiUwaJFToI-RK2BBxZ"
 )
 
 insertNewFlight(
@@ -278,8 +301,28 @@ insertNewFlight(
 )
 
 insertNewFlight(
+    departure_datetime=datetime(2023, 10, 28, 18, 30, 0),
+    arrival_datetime=datetime(2023, 10, 28, 22, 0, 0),
+    origin=3,
+    destination=1,
+    flight_time=time(2, 30),
+    price=220,
+    capacity=200
+)
+
+insertNewFlight(
     departure_datetime=datetime(2023, 10, 25, 9, 0, 0),
     arrival_datetime=datetime(2023, 10, 25, 11, 30, 0),
+    origin=2,
+    destination=4,
+    flight_time=time(2, 30),
+    price=210,
+    capacity=180
+)
+
+insertNewFlight(
+    departure_datetime=datetime(2023, 10, 29, 14, 0, 0),
+    arrival_datetime=datetime(2023, 10, 29, 16, 30, 0),
     origin=2,
     destination=4,
     flight_time=time(2, 30),
@@ -408,12 +451,32 @@ insertNewFlight(
 )
 
 insertNewFlight(
+    departure_datetime=datetime(2023, 10, 25, 14, 30, 0),
+    arrival_datetime=datetime(2023, 10, 25, 18, 0, 0),
+    origin=7,
+    destination=6,
+    flight_time=time(2, 30),
+    price=180,
+    capacity=200
+)
+
+insertNewFlight(
     departure_datetime=datetime(2023, 10, 15, 15, 0, 0),
     arrival_datetime=datetime(2023, 10, 15, 17, 30, 0),
     origin=8,
     destination=9,
     flight_time=time(2, 30),
     price=210,
+    capacity=220
+)
+
+insertNewFlight(
+    departure_datetime=datetime(2023, 10, 20, 22, 0, 0),
+    arrival_datetime=datetime(2023, 10, 20, 23, 50, 0),
+    origin=9,
+    destination=8,
+    flight_time=time(2, 30),
+    price=260,
     capacity=220
 )
 
@@ -497,23 +560,27 @@ insertNewPassenger(
 insertPassengerFlights(
     passenger_id=1,
     flight_id=3,
-    seat='A1'
+    seat='A1',
+    client_id=1
 )
 
 insertPassengerFlights(
     passenger_id=2,
     flight_id=3,
-    seat='B2'
+    seat='B2',
+    client_id=1
 )
 
 insertPassengerFlights(
     passenger_id=3,
     flight_id=3,
-    seat='C4'
+    seat='C4',
+    client_id=1
 )
 
 insertPassengerFlights(
     passenger_id=4,
     flight_id=3,
-    seat='F1'
+    seat='F1',
+    client_id=1
 )

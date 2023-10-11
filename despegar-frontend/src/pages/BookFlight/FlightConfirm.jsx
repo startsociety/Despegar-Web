@@ -23,7 +23,7 @@ export const FlightConfirm = (props) => {
                 </Box>
                 <Stack direction="row" spacing={2} alignItems={"center"} justifyContent={"start"}>
                     {FlightInformation(booking.flight, "Vuelo de ida")}
-                    <CompareArrowsIcon/> 
+                    {booking.flightBack ? <CompareArrowsIcon/>  : null}
                     {booking.flightBack ? FlightInformation(booking.flightBack, "Vuelo de vuelta") : null}
                 </Stack>
             </Stack>
