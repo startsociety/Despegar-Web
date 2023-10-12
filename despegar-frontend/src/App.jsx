@@ -23,7 +23,7 @@ function App() {
             <Route path="/login" element={<Login user={user} setUser={setUser}/>} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile user={user}/>} />
             <Route path="/flights" element={<Flights />} />
             <Route path="/book-flight/:flightId/:flightBackId?" element={<BookFlightStepper />} />
         </Routes>
