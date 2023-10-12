@@ -129,10 +129,10 @@ def update_client(id):
         name = request.form.get("name")
         email = request.form.get("email")
         document = int(request.form.get("document"))
-        phone = int(request.form.get("phone"))
+        phone = request.form.get("phone")
         address = request.form.get("address")
         city = request.form.get("city")
-        birthday = datetime.strptime(request.form.get("birthday"), '%d/%m/%Y')
+        birthday = datetime.strptime(request.form.get("birthday"), '%Y-%m-%d')
         sex = request.form.get("sex")
 
         client_data = Clients.query.get(id)
