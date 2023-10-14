@@ -481,10 +481,10 @@ insertNewFlight(
 )
 
 insertNewClient(
-    name='Juan Pérez',
-    email='juan.perez@example.com',
-    document='12345678',
-    phone='555-1234',
+    name='Gonzalo Cerbelli',
+    email='gonza.cerbelli@gmail.com',
+    document='39281276',
+    phone='1165245400',
     address='Calle Falsa 123',
     city='Buenos Aires',
     birthday=datetime(1990, 5, 15),
