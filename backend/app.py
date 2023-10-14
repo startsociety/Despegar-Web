@@ -35,7 +35,7 @@ def check_authentication():
 def send_email(client, body_data):
     response = None
 
-    sendgrid_apikey = "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"
+    sendgrid_apikey = get_env_vars("SENDGRID_APIKEY")
 
     message = Mail(
         from_email='despegarunla@gmail.com',
@@ -48,7 +48,6 @@ def send_email(client, body_data):
     message.template_id = 'd-1a198079ca1f423e9434528f74a00e5e'
 
     try:
-        print(message)
         sg = SendGridAPIClient(sendgrid_apikey)
         response = sg.send(message)
     except Exception as e:
