@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -8,7 +8,7 @@ import { Divider, Grid, Paper, Box, Typography } from '@mui/material';
 
 export const PassengerCard = (props) => {
 
-        const { passenger, setPassenger, booking, indexPassenger } = props
+        const { passenger, setPassenger, booking, indexPassenger, availableSeats, availableSeatsBack, keyPassenger, handleChangeSeating, handleChangeSeatingBack } = props
 
         const handleChangeCountry = (value) => {
    
@@ -18,20 +18,26 @@ export const PassengerCard = (props) => {
             setPassenger(passengerTemp)
         }
 
-        const handleChangeSeating = (value) => {
-   
-            let passengerTemp = { ...passenger }
-            passengerTemp["seat"] = value
+        useEffect(() => {
+            console.log("pasejro = ", passenger)
+        }, [ passenger]);
 
-            setPassenger(passengerTemp)
+        function seats(){           
+            let seats = availableSeats
+            
+            if(passenger.seat)
+             seats = [...availableSeats, passenger.seat]
+
+            return seats
         }
 
-        const handleChangeSeatingBack = (value) => {
-   
-            let passengerTemp = { ...passenger }
-            passengerTemp["seatBack"] = value
+        function seatsBack(){           
+            let seats = availableSeatsBack
+            
+            if(passenger.seatBack)
+             seats = [...availableSeatsBack, passenger.seatBack]
 
-            setPassenger(passengerTemp)
+            return seats
         }
         
         const handleChangeGender = (value) => {
@@ -68,26 +74,25 @@ export const PassengerCard = (props) => {
                                 Pasajero {indexPassenger + 1} 
                                 </Typography>
                             </Box>
-                        </Grid>
+                        </Grid>                            
                         <Grid item container>
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-autowidth-label" style={{fontFamily: 'Lato', fontWeight: 500}}>Asiento de Ida</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-autowidth-label"
                                         id="demo-simple-select-autowidth"
-                                        value={passenger.seat}
-                                        onChange={e => { handleChangeSeating(e.target.value) }}
+                                        defaultValue={passenger.seat}
+                                        onChange={e => { handleChangeSeating(e.target.value, passenger, keyPassenger) }}
                                         label="Asiento de Ida"
                                         >
                                         {
-                                            booking ? booking.selectedSeating.map((seating , index) =>{
+                                            seats().map((seating , index) =>{
                                                 return (
                                                     <MenuItem id={seating} key={index} value={seating}>
                                                         {seating}
                                                     </MenuItem>
                                                     )
                                                 })
-                                                : null
                                         }
                                     </Select>
                             </FormControl>
@@ -101,18 +106,16 @@ export const PassengerCard = (props) => {
                                             labelId="demo-simple-select-autowidth-label"
                                             id="demo-simple-select-autowidth"
                                             value={passenger.seatBack}
-                                            onChange={e => { handleChangeSeatingBack(e.target.value) }}
-                                            label="Asiento de Vuelta"
-                                            >
+                                            onChange={e => { handleChangeSeatingBack(e.target.value, passenger, keyPassenger) }}
+                                            label="Asiento de Vuelta">
                                             {
-                                                booking ? booking.selectedSeatingBack.map((seating , index) =>{
+                                                seatsBack().map((seating , index) =>{
                                                     return (
                                                         <MenuItem id={seating} key={index} value={seating}>
                                                             {seating}
                                                         </MenuItem>
                                                         )
                                                     })
-                                                    : null
                                             }
                                         </Select>
                                 </FormControl>
@@ -120,30 +123,23 @@ export const PassengerCard = (props) => {
                             : 
                             null
                         }
-     
-                        <Grid item container>
-                            <TextField
-                                    fullWidth
-                                    style={{ width:"100%"}}
-                                    id="outlined-required"
-                                    label="Nombre/s"
-                                    name="firstname"
-                                    onChange={e => { handleChangeName(e.target.value) }}
-                                    value={passenger.name}
+                        <TextField                                    
+                                style={{ width:"100%", marginTop:"5%", marginRight:"0%"}}
+                                id="outlined-required"
+                                label="Nombre/s"
+                                name="firstname"
+                                onChange={e => { handleChangeName(e.target.value) }}
+                                value={passenger.name}
+                        />
+                        <TextField                                     
+                                style={{ width:"100%", marginTop:"4%", marginRight:"0%"}}
+                                name="dni"
+                                id="outlined-required"
+                                label="DNI"
+                                type="number"
+                                value={passenger.document}
+                                onChange={e => { handleChangeDocument(e.target.value) }}
                             />
-                        </Grid>
-                        <Grid item container sx={{margin:"0px", padding:"0px"}}>
-                            <TextField 
-                                    fullWidth
-                                    style={{ width:"100%"}}
-                                    name="dni"
-                                    id="outlined-required"
-                                    label="DNI"
-                                    type="number"
-                                    value={passenger.document}
-                                    onChange={e => { handleChangeDocument(e.target.value) }}
-                                />
-                        </Grid>
                         <Grid item container>
                             <FormControl fullWidth sx={{marginTop:"10px"}}>
                                 <InputLabel id="demo-simple-select-autowidth-label" style={{fontFamily: 'Lato', fontWeight: 500}}>País de residencia</InputLabel>
