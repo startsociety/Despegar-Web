@@ -481,10 +481,10 @@ insertNewFlight(
 )
 
 insertNewClient(
-    name='Juan Pérez',
-    email='juan.perez@example.com',
-    document='12345678',
-    phone='555-1234',
+    name='Gonzalo Cerbelli',
+    email='gonza.cerbelli@gmail.com',
+    document='39281276',
+    phone='1165245400',
     address='Calle Falsa 123',
     city='Buenos Aires',
     birthday=datetime(1990, 5, 15),
@@ -505,15 +505,15 @@ insertNewClient(
 )
 
 insertNewClient(
-    name='Carlos Gómez',
-    email='carlos.gomez@example.com',
-    document='34567890',
+    name='Lucas Ambesi',
+    email='ambesilucas@gmail.com',
+    document='39919019',
     phone='555-7890',
     address='Ruta 10, Km 15',
-    city='Mendoza',
+    city='Bueno Aires',
     birthday=datetime(1992, 3, 10),
     sex='Masculino',
-    password='miclave789'
+    password='miclave123'
 )
 
 insertNewClient(

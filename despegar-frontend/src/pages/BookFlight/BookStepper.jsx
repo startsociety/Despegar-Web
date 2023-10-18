@@ -43,7 +43,9 @@ export const BookFlightStepper = () => {
     "flight": null,
     "flightBack": null,
     "selectedSeating": [],
+    "availableSeats": [],
     "selectedSeatingBack": [],
+    "availableSeatsBack": [],
     "passengers": [],
     "price": null,
     "discounts": null,
@@ -96,6 +98,12 @@ export const BookFlightStepper = () => {
 
     if(activeStep == STEPS_ID.seats) {
       validate = StepSeats()
+      const updatedBooking = { ...booking };
+  
+      updatedBooking.availableSeats = booking.selectedSeating;
+      updatedBooking.availableSeatsBack = booking.selectedSeatingBack;
+
+      setBooking(updatedBooking);
     }
 
     else if(activeStep == STEPS_ID.passengers) {
@@ -105,7 +113,6 @@ export const BookFlightStepper = () => {
     if(activeStep == STEPS_ID.pay_flight) {      
       validate = StepPayFlight()
     }
-
 
     if(activeStep == STEPS_ID.confirm) {
       StepFlightConfirm()
@@ -156,7 +163,7 @@ export const BookFlightStepper = () => {
   }
 
   function StepPassengers(){
-    let validate = validateStepPassengers(booking.passengers)
+    let validate = validateStepPassengers(booking)
 
     if (validate) {
       let totalPrice = 0;
@@ -174,9 +181,8 @@ export const BookFlightStepper = () => {
     return validate;
   }
 
-  function validateStepPassengers(passengers) {
-    const seats = new Set();
-    const seatBacks = new Set();
+  function validateStepPassengers(booking) {
+    const passengers = booking.passengers
   
     for (let i = 0; i < passengers.length; i++) {
       const passenger = passengers[i];
@@ -201,17 +207,15 @@ export const BookFlightStepper = () => {
         return false;
       }
   
-      if (seats.has(passenger.seat)) {
-        alert("El asiento " + passenger.seat + " ya ha sido seleccionado por otro pasajero.");
+      if(!passenger.seat){
+        alert("El asiento de ida del pasajero " + (i + 1) + " debe ser completado");
         return false;
       }
-      seats.add(passenger.seat);
-  
-      if (seatBacks.has(passenger.seatBack)) {
-        alert("El asiento de vuelta " + passenger.seatBack + " ya ha sido seleccionado por otro pasajero.");
+
+      if(flightBackId != "null" && !passenger.seatBack){
+        alert("El asiento de vuelta del pasajero " + (i + 1) + " debe ser completado");
         return false;
       }
-      seatBacks.add(passenger.seatBack);
     }
   
     return true;

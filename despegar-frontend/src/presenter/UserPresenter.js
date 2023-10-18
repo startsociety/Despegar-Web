@@ -15,11 +15,7 @@ export const userPresenter = () => {
                 return getMock()
             }
 
-            const res = await axios.get(`${baseUrl}/user`, {
-                params: {
-                  idUser: idUser
-                }
-              });
+            const res = await axios.get(`${baseUrl}/client/${idUser}`);
 
             const result = await res.data;
 
@@ -83,9 +79,36 @@ export const userPresenter = () => {
         }
     }
 
+    const update = async (client) => {
+        console.log("🚀 ~ file: UserPresenter.js:83 ~ update ~ client:", client)
+        try {
+            const body = {                
+                "name": client.name,
+                "email": client.email,
+                "document": client.document,
+                "phone": client.phone,
+                "address": client.address,
+                "city": client.city,
+                "birthday": client.birthday,
+                "sex": client.sex         
+              }
+            const headers = 
+            {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            };
+
+            const res = await axios.put(`${baseUrl}/client/${client.id}`, body, { headers });
+            console.log("res =>", res)
+            return res.data;
+        } catch (err) {
+            console.log('err => ' , err)
+        }
+    }
+
     return {
         getById,
         login,
-        register
+        register,
+        update
     }
 }

@@ -2,6 +2,8 @@ from flask import Flask, request, Response
 from flask_cors import CORS
 from sqlalchemy import or_, and_
 from datetime import datetime
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 import json
 import logging
 import jwt
@@ -28,6 +30,31 @@ def check_authentication():
                        "verify_signature": True}, algorithms=["RS256"])
     except Exception as e:
         return Response(json.dumps({"error": str(e)}), status=401, mimetype='application/json')
+
+
+def send_email(client, body_data):
+    response = None
+
+    sendgrid_apikey = get_env_vars("SENDGRID_APIKEY")
+
+    message = Mail(
+        from_email='despegarunla@gmail.com',
+        to_emails=client.email,
+        subject=None,
+        is_multiple=True)
+    
+    message.dynamic_template_data = body_data
+
+    message.template_id = 'd-1a198079ca1f423e9434528f74a00e5e'
+
+    try:
+        sg = SendGridAPIClient(sendgrid_apikey)
+        response = sg.send(message)
+    except Exception as e:
+        print(e)
+        response = e
+
+    return response
 
 
 @app.route("/signin", methods=["POST"])
@@ -129,10 +156,10 @@ def update_client(id):
         name = request.form.get("name")
         email = request.form.get("email")
         document = int(request.form.get("document"))
-        phone = int(request.form.get("phone"))
+        phone = request.form.get("phone")
         address = request.form.get("address")
         city = request.form.get("city")
-        birthday = datetime.strptime(request.form.get("birthday"), '%d/%m/%Y')
+        birthday = datetime.strptime(request.form.get("birthday"), '%Y-%m-%d')
         sex = request.form.get("sex")
 
         client_data = Clients.query.get(id)
@@ -396,6 +423,37 @@ def book_flight():
                     db_session.add(passenger_flight)
                     db_session.commit()
 
+        client = Clients.query.get(client_id)
+
+        email_body_data = {"subject": "Despegar - Ticket de vuelo", "flights": []}
+
+        iteration = 0
+        for flight_id in flights_id:
+            flight = Flights.query.get(flight_id)
+
+            for passenger in passengers:
+                passenger_name = passenger["name"]
+
+                origin_airport = Airports.query.get(flight.origin)
+                destination_airport = Airports.query.get(flight.destination)
+
+                email_body_data['flights'].append({
+                    "passenger": {"name": passenger_name},
+                    "title": "ida" if iteration == 0 else "vuelta",
+                    "origin": "{}, {}, ({})".format(origin_airport.name, origin_airport.city, origin_airport.code),
+                    "destination": "{}, {}, ({})".format(destination_airport.name, destination_airport.city, destination_airport.code),
+                    "departure_datetime": flight.departure_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                    "arrival_datetime": flight.departure_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                    "seat": passenger["seat"][iteration],
+                    "flight_id": flight.id,
+                    "price": flight.price
+                })
+
+            iteration = iteration+1
+
+        send_email(client, body_data=email_body_data)
+
+        
         response = Response("Flight was booked by {} passengers successfully".format(
             len(passengers)), status=201, mimetype='application/json')
 
