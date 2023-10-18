@@ -85,7 +85,6 @@ export const NavBar = (props) => {
             { user ? (
                 <>                     
                     <Button onClick={toProfile} sx={{ my: 2, color: 'white', display: 'block' }}>Mi Perfil</Button>
-                    <Button onClick={toFlights} sx={{ my: 2, color: 'white', display: 'block' }}>Mis Vuelos</Button>
                     <Button onClick={logout} sx={{ my: 2, color: 'white', display: 'block' }}>Cerrar Sesión</Button>
                 </>
             ) : (

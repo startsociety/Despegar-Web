@@ -11,7 +11,7 @@ export const Profile = (props) => {
     const { getById, update } = userPresenter()
 
     useEffect(() => {
-            getById(user.idUser)
+            getById(user.id)
             .then((res) => {
                 setClient(res)
             })
